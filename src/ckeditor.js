@@ -274,8 +274,7 @@ Editor.defaultConfig = {
       left: '12mm',
       right: '12mm'
     }
-  },
-  licenseKey: process.env.CKEDITOR_LICENSE_KEY
+  }
 }
 
 const CkModule = { Editor, Context, ContextWatchdog }
