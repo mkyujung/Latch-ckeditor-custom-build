@@ -22,6 +22,7 @@ module.exports = (env, { mode }) => {
   return {
     devtool: 'source-map',
     performance: { hints: false },
+    mode: 'production',
 
     entry: path.resolve(__dirname, 'src', 'ckeditor.js'),
 

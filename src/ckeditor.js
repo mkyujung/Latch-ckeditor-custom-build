@@ -14,6 +14,8 @@ import CloudServices from '@ckeditor/ckeditor5-cloud-services/src/cloudservices.
 import Code from '@ckeditor/ckeditor5-basic-styles/src/code.js'
 import CodeBlock from '@ckeditor/ckeditor5-code-block/src/codeblock.js'
 import Comments from '@ckeditor/ckeditor5-comments/src/comments.js'
+import ContextBase from '@ckeditor/ckeditor5-core/src/context'
+import ContextWatchdog from '@ckeditor/ckeditor5-watchdog/src/contextwatchdog'
 import DataFilter from '@ckeditor/ckeditor5-html-support/src/datafilter.js'
 import DataSchema from '@ckeditor/ckeditor5-html-support/src/dataschema.js'
 import DecoupledDocumentEditor from '@ckeditor/ckeditor5-editor-decoupled/src/decouplededitor.js'
@@ -48,6 +50,7 @@ import Markdown from '@ckeditor/ckeditor5-markdown-gfm/src/markdown.js'
 import MediaEmbed from '@ckeditor/ckeditor5-media-embed/src/mediaembed.js'
 import MediaEmbedToolbar from '@ckeditor/ckeditor5-media-embed/src/mediaembedtoolbar.js'
 import Mention from '@ckeditor/ckeditor5-mention/src/mention.js'
+import NarrowSidebar from '@ckeditor/ckeditor5-comments/src/annotations/narrowsidebar'
 import PageBreak from '@ckeditor/ckeditor5-page-break/src/pagebreak.js'
 import Pagination from '@ckeditor/ckeditor5-pagination/src/pagination.js'
 import Paragraph from '@ckeditor/ckeditor5-paragraph/src/paragraph.js'
@@ -75,8 +78,10 @@ import TextTransformation from '@ckeditor/ckeditor5-typing/src/texttransformatio
 import TodoList from '@ckeditor/ckeditor5-list/src/todolist'
 import TrackChanges from '@ckeditor/ckeditor5-track-changes/src/trackchanges'
 import Underline from '@ckeditor/ckeditor5-basic-styles/src/underline.js'
+import WideSidebar from '@ckeditor/ckeditor5-comments/src/annotations/widesidebar'
 import WordCount from '@ckeditor/ckeditor5-word-count/src/wordcount.js'
 
+class Context extends ContextBase {}
 // An example of a plugin that provides user data for an editor
 // that uses `Comments` and `RevisionHistory` plugins.
 export class UsersIntegration extends Plugin {
@@ -101,6 +106,14 @@ export class UsersIntegration extends Plugin {
     // Define the local user.
     users.defineMe('u1')
   }
+}
+
+// Plugins to include in the context.
+Context.builtinPlugins = [NarrowSidebar, WideSidebar]
+
+Context.defaultConfig = {
+  // Configuration shared between editors:
+  language: 'en'
 }
 
 class Editor extends DecoupledDocumentEditor {}
@@ -265,4 +278,5 @@ Editor.defaultConfig = {
   licenseKey: process.env.CKEDITOR_LICENSE_KEY
 }
 
-export default Editor
+const CkModule = { Editor, Context, ContextWatchdog }
+export default CkModule
