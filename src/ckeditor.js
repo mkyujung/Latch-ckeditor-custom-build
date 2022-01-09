@@ -55,6 +55,7 @@ import PageBreak from '@ckeditor/ckeditor5-page-break/src/pagebreak.js'
 import Pagination from '@ckeditor/ckeditor5-pagination/src/pagination.js'
 import Paragraph from '@ckeditor/ckeditor5-paragraph/src/paragraph.js'
 import PasteFromOffice from '@ckeditor/ckeditor5-paste-from-office/src/pastefromoffice.js'
+import Placeholder from 'ckeditor5-placeholder'
 import Plugin from '@ckeditor/ckeditor5-core/src/plugin.js'
 import RemoveFormat from '@ckeditor/ckeditor5-remove-format/src/removeformat.js'
 import SpecialCharacters from '@ckeditor/ckeditor5-special-characters/src/specialcharacters.js'
@@ -169,6 +170,7 @@ Editor.builtinPlugins = [
   Pagination,
   Paragraph,
   PasteFromOffice,
+  Placeholder,
   RemoveFormat,
   SpecialCharacters,
   SpecialCharactersArrows,
