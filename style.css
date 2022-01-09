@@ -1,0 +1,41 @@
+/* assets/styles.css */
+
+/* --- General application styles --------------------------------------------------- */
+
+.app {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  margin: 0 auto;
+}
+
+.app h2 {
+  font-size: 1.3em;
+}
+
+.app textarea {
+  width: 100%;
+  height: 150px;
+  font-family: 'Courier New', Courier, monospace;
+  box-sizing: border-box;
+  font-size: 14px;
+}
+
+/* --- In-editor product widget styles --------------------------------------------------- */
+
+.app .ck-content .product {
+  margin: 1em;
+  animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+  0% {
+    opacity: 0;
+    transform: translateY(1em);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

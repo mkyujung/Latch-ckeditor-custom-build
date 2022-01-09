@@ -5,7 +5,7 @@ const path = require('path')
 const { styles } = require('@ckeditor/ckeditor5-dev-utils')
 
 module.exports = {
-  entry: path.resolve(__dirname, 'app.js'),
+  entry: path.resolve(__dirname, 'app.jsx'),
 
   output: {
     path: path.resolve(__dirname, 'example'),
@@ -19,13 +19,14 @@ module.exports = {
         use: ['raw-loader']
       },
       {
-        test: /\.js$/,
+        test: /\.jsx?$/,
         exclude: /node_modules/,
         loader: 'babel-loader',
         query: {
           presets: ['@babel/react']
         }
       },
+
       {
         test: /ckeditor5-[^/\\]+[/\\]theme[/\\].+\.css$/,
         use: [
@@ -48,6 +49,25 @@ module.exports = {
             })
           }
         ]
+      },
+      {
+        test: /\.css$/,
+        use: [
+          'style-loader',
+          {
+            loader: 'css-loader',
+            options: {
+              importLoaders: 1
+            }
+          },
+          {
+            loader: 'postcss-loader',
+            options: {
+              plugins: []
+            }
+          }
+        ],
+        exclude: /ckeditor5-[^/\\]+[/\\]theme[/\\].+\.css$/
       }
     ]
   },
