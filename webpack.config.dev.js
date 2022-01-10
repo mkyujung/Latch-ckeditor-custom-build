@@ -1,6 +1,3 @@
-// webpack.config.js
-
-const webpack = require('webpack')
 const path = require('path')
 const { styles } = require('@ckeditor/ckeditor5-dev-utils')
 

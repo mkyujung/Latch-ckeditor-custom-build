@@ -243,7 +243,8 @@ Editor.defaultConfig = {
       'specialCharacters',
       'restrictedEditingException',
       'subscript',
-      'superscript'
+      'superscript',
+      'placeholder'
     ]
   },
   language: 'en',
