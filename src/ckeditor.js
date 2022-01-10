@@ -132,7 +132,7 @@ Editor.builtinPlugins = [
   CloudServices,
   Code,
   CodeBlock,
-  Comments,
+  // Comments,
   DataFilter,
   DataSchema,
   Essentials,
@@ -230,7 +230,7 @@ Editor.defaultConfig = {
       '|',
       'undo',
       'redo',
-      'comment',
+      // 'comment',
       'exportPdf',
       'exportWord',
       'findAndReplace',
@@ -249,7 +249,7 @@ Editor.defaultConfig = {
   language: 'en',
   image: {
     toolbar: [
-      'comment',
+      // 'comment',
       'imageTextAlternative',
       'imageStyle:inline',
       'imageStyle:block',
@@ -264,8 +264,8 @@ Editor.defaultConfig = {
       'mergeTableCells',
       'tableCellProperties',
       'tableProperties'
-    ],
-    tableToolbar: ['comment']
+    ]
+    // tableToolbar: ['comment']
   },
   pagination: {
     pageWidth: '21cm',
