@@ -14,11 +14,6 @@ const CKEditorWebpackPlugin = require('@ckeditor/ckeditor5-dev-webpack-plugin')
 const TerserWebpackPlugin = require('terser-webpack-plugin')
 
 module.exports = (env, { mode }) => {
-  const { parsed: envVars } = require('dotenv-flow').config({
-    node_env: mode,
-    path: '../'
-  })
-
   return {
     devtool: 'source-map',
     performance: { hints: false },
@@ -61,8 +56,7 @@ module.exports = (env, { mode }) => {
       new webpack.BannerPlugin({
         banner: bundler.getLicenseBanner(),
         raw: true
-      }),
-      new webpack.EnvironmentPlugin(envVars)
+      })
     ],
 
     module: {
