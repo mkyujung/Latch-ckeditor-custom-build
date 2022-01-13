@@ -1,5 +1,8 @@
 import './Smartfield.css'
 
+// Consider changing styling to event driven plugin
+// https://ckeditor.com/docs/ckeditor5/latest/framework/guides/deep-dive/conversion/conversion-extending-output.html
+// So the plugin can be removed for pdf renders
 import {
   addListToDropdown,
   createDropdown,
@@ -29,10 +32,6 @@ export default class SmartfieldUi extends Plugin {
       })
 
       this.listenTo(dropdownView, 'execute', (evt) => {
-        console.log(
-          '🚀 ~ file: SmartfieldUi.jsx ~ line 32 ~ SmartfieldUi ~ this.listenTo ~ evt',
-          evt
-        )
         editor.execute('insert_smartfield', evt.source.commandParam)
 
         editor.editing.view.focus()

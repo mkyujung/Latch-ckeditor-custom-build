@@ -14,6 +14,7 @@ export default class InsertSmartfieldCommand extends Command {
     })
   }
 
+  // This method runs on every change
   refresh() {
     const { model } = this.editor
     const { selection } = model.document

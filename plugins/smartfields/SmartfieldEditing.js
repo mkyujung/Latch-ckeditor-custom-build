@@ -48,13 +48,14 @@ export default class SmartfieldEditing extends Plugin {
       allowWhere: '$text',
       isInline: true,
       isObject: true,
-      allowAttributes: ['value', 'title']
+      allowAttributes: ['value', 'title', 'id']
     })
   }
 
   _defineConverters() {
     const { conversion, config } = this.editor
 
+    // UI to Model
     conversion.for('upcast').elementToElement({
       view: {
         name: 'span',
@@ -70,12 +71,13 @@ export default class SmartfieldEditing extends Plugin {
           )
 
         // TODO: If value is falsy, write title?
-
         const modelWriter = writer.writer
+
         return modelWriter.createElement('smartfield', { value })
       }
     })
 
+    // Model to HTML View
     conversion.for('editingDowncast').elementToElement({
       model: 'smartfield',
       view: (modelItem, writer) => {
@@ -88,6 +90,7 @@ export default class SmartfieldEditing extends Plugin {
       }
     })
 
+    // Model to HTML View
     conversion.for('dataDowncast').elementToElement({
       model: 'smartfield',
       view: (modelItem, writer) => {

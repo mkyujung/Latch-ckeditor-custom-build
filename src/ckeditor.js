@@ -45,7 +45,6 @@ import Link from '@ckeditor/ckeditor5-link/src/link.js'
 import LinkImage from '@ckeditor/ckeditor5-link/src/linkimage.js'
 import List from '@ckeditor/ckeditor5-list/src/list.js'
 import ListStyle from '@ckeditor/ckeditor5-list/src/liststyle.js'
-import Markdown from '@ckeditor/ckeditor5-markdown-gfm/src/markdown.js'
 import MediaEmbed from '@ckeditor/ckeditor5-media-embed/src/mediaembed.js'
 import MediaEmbedToolbar from '@ckeditor/ckeditor5-media-embed/src/mediaembedtoolbar.js'
 import Mention from '@ckeditor/ckeditor5-mention/src/mention.js'
@@ -55,7 +54,6 @@ import PageBreak from '@ckeditor/ckeditor5-page-break/src/pagebreak.js'
 import Pagination from '@ckeditor/ckeditor5-pagination/src/pagination.js'
 import Paragraph from '@ckeditor/ckeditor5-paragraph/src/paragraph.js'
 import PasteFromOffice from '@ckeditor/ckeditor5-paste-from-office/src/pastefromoffice.js'
-import Placeholder from 'ckeditor5-placeholder'
 import Plugin from '@ckeditor/ckeditor5-core/src/plugin.js'
 import RemoveFormat from '@ckeditor/ckeditor5-remove-format/src/removeformat.js'
 import { SmartfieldPlugin } from '../plugins/smartfields'
@@ -163,7 +161,7 @@ Editor.builtinPlugins = [
   LinkImage,
   List,
   ListStyle,
-  Markdown,
+  // Markdown,
   MediaEmbed,
   MediaEmbedToolbar,
   Mention,
@@ -171,7 +169,7 @@ Editor.builtinPlugins = [
   Pagination,
   Paragraph,
   PasteFromOffice,
-  Placeholder,
+  // Placeholder,
   SmartfieldPlugin,
   RemoveFormat,
   SpecialCharacters,
@@ -202,6 +200,7 @@ Editor.builtinPlugins = [
 Editor.defaultConfig = {
   toolbar: {
     items: [
+      'smartfield',
       'heading',
       '|',
       'fontSize',
@@ -245,9 +244,8 @@ Editor.defaultConfig = {
       'specialCharacters',
       'restrictedEditingException',
       'subscript',
-      'superscript',
-      'placeholder',
-      'smartfield'
+      'superscript'
+      // 'placeholder',
     ]
   },
   language: 'en',
@@ -287,7 +285,7 @@ const CkModule = {
   Editor,
   Context,
   ContextWatchdog,
-  packageVersion: 1,
+  packageVersion: 25,
   sanitySalt: Date.now()
 }
 export default CkModule
