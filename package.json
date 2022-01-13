@@ -70,7 +70,7 @@
   },
   "scripts": {
     "build": "webpack --config webpack.config.js --mode production",
-    "build:watch": "webpack --config webpack.config.js --mode development --watch",
+    "build:watch": "webpack --config webpack.config.js --mode production --watch",
     "dev": "webpack --config webpack.config.dev.js --mode development --watch"
   },
   "dependencies": {

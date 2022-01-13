@@ -28,12 +28,12 @@ export default class SmartfieldEditing extends Plugin {
       )
     )
 
-    this.editor.config.define('smartfieldProps', {
-      types: [
-        { title: 'Company Name', value: '' },
-        { title: 'Contract Date', value: '' }
-      ]
-    })
+    // this.editor.config.define('smartfieldProps', {
+    //   types: [
+    //     { title: 'Company Name', value: '' },
+    //     { title: 'Contract Date', value: '' }
+    //   ]
+    // })
 
     this.editor.config.define('smartfieldBrackets', {
       open: '{',
@@ -48,7 +48,15 @@ export default class SmartfieldEditing extends Plugin {
       allowWhere: '$text',
       isInline: true,
       isObject: true,
-      allowAttributes: ['value', 'title', 'id']
+      allowAttributes: [
+        'value',
+        'title',
+        'id',
+        'signatureVariable',
+        'showCounterPartyToProvideCheckbox',
+        'counterPartyToProvide'
+        // 'color'
+      ]
     })
   }
 
@@ -63,17 +71,25 @@ export default class SmartfieldEditing extends Plugin {
       },
       model: (viewElement, writer) => {
         // Extract the "value" from {value}
-        const value = viewElement
-          .getChild(0)
-          .data.slice(
-            config.get('smartfieldBrackets.open').length,
-            0 - config.get('smartfieldBrackets.close').length
-          )
+        // const value = viewElement
+        //   .getChild(0)
+        //   .data.slice(
+        //     config.get('smartfieldBrackets.open').length,
+        //     0 - config.get('smartfieldBrackets.close').length
+        //   )
+
+        // const title = viewElement.getAttribute('title')
 
         // TODO: If value is falsy, write title?
         const modelWriter = writer.writer
-
-        return modelWriter.createElement('smartfield', { value })
+        return modelWriter.createElement(
+          'smartfield',
+          [...viewElement.getAttributes()].reduce((a, b) => {
+            a[b[0]] = b[1]
+            return a
+          }, {})
+        )
+        return modelWriter.createElement('smartfield', { value, title })
       }
     })
 
@@ -86,7 +102,9 @@ export default class SmartfieldEditing extends Plugin {
         const widgetElement = createSmartfieldView(modelItem, viewWriter)
 
         // Enable widget handling on placeholder element inside editing view.
-        return toWidget(widgetElement, viewWriter)
+        const resultWidget = toWidget(widgetElement, viewWriter)
+
+        return resultWidget
       }
     })
 
@@ -105,8 +123,21 @@ export default class SmartfieldEditing extends Plugin {
       const title = modelItem.getAttribute('title')
 
       const smartfieldView = viewWriter.createContainerElement('span', {
-        class: 'smartfield'
+        class: 'smartfield',
+        title,
+        value,
+        ...[...modelItem.getAttributes()].reduce((a, b) => {
+          a[b[0]] = b[1]
+          return a
+        }, {})
       })
+      console.log(
+        '🚀 ~ file: SmartfieldEditing.js ~ line 135 ~ SmartfieldEditing ~ createSmartfieldView ~ ...modelItem.getAttributes()',
+        [...modelItem.getAttributes()].reduce((a, b) => {
+          a[b[0]] = b[1]
+          return a
+        }, {})
+      )
 
       const innerText = viewWriter.createText(
         config.get('smartfieldBrackets.open') +

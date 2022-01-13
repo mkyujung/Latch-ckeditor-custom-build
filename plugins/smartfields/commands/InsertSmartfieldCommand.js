@@ -3,10 +3,14 @@ import { Command } from '@ckeditor/ckeditor5-core'
 export default class InsertSmartfieldCommand extends Command {
   execute(commandParam) {
     this.editor.model.change((writer) => {
-      const smartfield = writer.createElement('smartfield', {
-        value: commandParam.value,
-        title: commandParam.title
-      })
+      const smartfield = writer.createElement(
+        'smartfield',
+        // {
+        // value: commandParam.value,
+        // title: commandParam.title
+        // }
+        commandParam
+      )
 
       this.editor.model.insertContent(smartfield)
 
