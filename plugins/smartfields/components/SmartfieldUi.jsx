@@ -54,24 +54,6 @@ function getDropdownItemsDefinitions(smartfields) {
       })
     }))
   )
-  console.log(
-    '🚀 ~ file: SmartfieldUi.jsx ~ line 53 ~ getDropdownItemsDefinitions ~ itemDefinitions',
-    itemDefinitions
-  )
-
-  // for (const s of smartfields) {
-  //   const definition = {
-  //     type: 'button',
-  //     model: new Model({
-  //       commandParam: s,
-  //       label: name,
-  //       withText: true
-  //     })
-  //   }
-
-  //   // Add the item definition to the collection.
-  //   itemDefinitions.add(definition)
-  // }
 
   return itemDefinitions
 }

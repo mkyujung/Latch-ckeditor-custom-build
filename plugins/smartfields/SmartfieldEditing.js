@@ -68,10 +68,6 @@ export default class SmartfieldEditing extends Plugin {
             config.get('smartfieldBrackets.open').length,
             0 - config.get('smartfieldBrackets.close').length
           )
-        console.log(
-          '🚀 ~ file: SmartfieldEditing.js ~ line 70 ~ SmartfieldEditing ~ _defineConverters ~ value',
-          value
-        )
 
         // TODO: If value is falsy, write title?
 
@@ -102,10 +98,6 @@ export default class SmartfieldEditing extends Plugin {
     })
 
     function createSmartfieldView(modelItem, viewWriter) {
-      console.log(
-        '🚀 ~ file: SmartfieldEditing.js ~ line 88 ~ SmartfieldEditing ~ createSmartfieldView ~ modelItem',
-        modelItem
-      )
       const value = modelItem.getAttribute('value')
       const title = modelItem.getAttribute('title')
 
@@ -115,7 +107,7 @@ export default class SmartfieldEditing extends Plugin {
 
       const innerText = viewWriter.createText(
         config.get('smartfieldBrackets.open') +
-          title +
+          (value || title) +
           config.get('smartfieldBrackets.close')
       )
 
