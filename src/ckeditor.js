@@ -13,7 +13,6 @@ import Bold from '@ckeditor/ckeditor5-basic-styles/src/bold.js'
 import CloudServices from '@ckeditor/ckeditor5-cloud-services/src/cloudservices.js'
 import Code from '@ckeditor/ckeditor5-basic-styles/src/code.js'
 import CodeBlock from '@ckeditor/ckeditor5-code-block/src/codeblock.js'
-import Comments from '@ckeditor/ckeditor5-comments/src/comments.js'
 import ContextBase from '@ckeditor/ckeditor5-core/src/context'
 import ContextWatchdog from '@ckeditor/ckeditor5-watchdog/src/contextwatchdog'
 import DataFilter from '@ckeditor/ckeditor5-html-support/src/datafilter.js'
@@ -51,6 +50,7 @@ import MediaEmbed from '@ckeditor/ckeditor5-media-embed/src/mediaembed.js'
 import MediaEmbedToolbar from '@ckeditor/ckeditor5-media-embed/src/mediaembedtoolbar.js'
 import Mention from '@ckeditor/ckeditor5-mention/src/mention.js'
 import NarrowSidebar from '@ckeditor/ckeditor5-comments/src/annotations/narrowsidebar'
+import packagejson from '../package.json'
 import PageBreak from '@ckeditor/ckeditor5-page-break/src/pagebreak.js'
 import Pagination from '@ckeditor/ckeditor5-pagination/src/pagination.js'
 import Paragraph from '@ckeditor/ckeditor5-paragraph/src/paragraph.js'
@@ -58,6 +58,7 @@ import PasteFromOffice from '@ckeditor/ckeditor5-paste-from-office/src/pastefrom
 import Placeholder from 'ckeditor5-placeholder'
 import Plugin from '@ckeditor/ckeditor5-core/src/plugin.js'
 import RemoveFormat from '@ckeditor/ckeditor5-remove-format/src/removeformat.js'
+import { SmartfieldPlugin } from '../plugins/smartfields'
 import SpecialCharacters from '@ckeditor/ckeditor5-special-characters/src/specialcharacters.js'
 import SpecialCharactersArrows from '@ckeditor/ckeditor5-special-characters/src/specialcharactersarrows.js'
 import SpecialCharactersCurrency from '@ckeditor/ckeditor5-special-characters/src/specialcharacterscurrency.js'
@@ -171,6 +172,7 @@ Editor.builtinPlugins = [
   Paragraph,
   PasteFromOffice,
   Placeholder,
+  SmartfieldPlugin,
   RemoveFormat,
   SpecialCharacters,
   SpecialCharactersArrows,
@@ -244,7 +246,8 @@ Editor.defaultConfig = {
       'restrictedEditingException',
       'subscript',
       'superscript',
-      'placeholder'
+      'placeholder',
+      'smartfield'
     ]
   },
   language: 'en',
@@ -280,5 +283,11 @@ Editor.defaultConfig = {
   }
 }
 
-const CkModule = { Editor, Context, ContextWatchdog }
+const CkModule = {
+  Editor,
+  Context,
+  ContextWatchdog,
+  packageVersion: 1,
+  sanitySalt: Date.now()
+}
 export default CkModule
