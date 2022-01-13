@@ -23,6 +23,7 @@ export default class SmartfieldUi extends Plugin {
     editor.ui.componentFactory.add('smartfield', (locale) => {
       const dropdownView = createDropdown(locale)
 
+      // Because this is only set on init, it's not getting any new values
       addListToDropdown(dropdownView, getDropdownItemsDefinitions(smartfields))
 
       dropdownView.buttonView.set({

@@ -28,12 +28,9 @@ export default class SmartfieldEditing extends Plugin {
       )
     )
 
-    // this.editor.config.define('smartfieldProps', {
-    //   types: [
-    //     { title: 'Company Name', value: '' },
-    //     { title: 'Contract Date', value: '' }
-    //   ]
-    // })
+    this.editor.config.define('smartfieldProps', {
+      types: []
+    })
 
     this.editor.config.define('smartfieldBrackets', {
       open: '{',
@@ -49,13 +46,16 @@ export default class SmartfieldEditing extends Plugin {
       isInline: true,
       isObject: true,
       allowAttributes: [
-        'value',
-        'title',
+        // Recheck this list to match smartfield properties
+        // Best if it's short and has referential synchronisity with
+        // document metadata smartfields array
+        'color',
+        'counterPartyToProvide',
         'id',
-        'signatureVariable',
         'showCounterPartyToProvideCheckbox',
-        'counterPartyToProvide'
-        // 'color'
+        'signatureVariable',
+        'title',
+        'value'
       ]
     })
   }
@@ -78,18 +78,12 @@ export default class SmartfieldEditing extends Plugin {
         //     0 - config.get('smartfieldBrackets.close').length
         //   )
 
-        // const title = viewElement.getAttribute('title')
-
-        // TODO: If value is falsy, write title?
         const modelWriter = writer.writer
+
         return modelWriter.createElement(
           'smartfield',
-          [...viewElement.getAttributes()].reduce((a, b) => {
-            a[b[0]] = b[1]
-            return a
-          }, {})
+          constructAttributesObject(viewElement.getAttributes())
         )
-        return modelWriter.createElement('smartfield', { value, title })
       }
     })
 
@@ -126,18 +120,8 @@ export default class SmartfieldEditing extends Plugin {
         class: 'smartfield',
         title,
         value,
-        ...[...modelItem.getAttributes()].reduce((a, b) => {
-          a[b[0]] = b[1]
-          return a
-        }, {})
+        ...constructAttributesObject(modelItem.getAttributes())
       })
-      console.log(
-        '🚀 ~ file: SmartfieldEditing.js ~ line 135 ~ SmartfieldEditing ~ createSmartfieldView ~ ...modelItem.getAttributes()',
-        [...modelItem.getAttributes()].reduce((a, b) => {
-          a[b[0]] = b[1]
-          return a
-        }, {})
-      )
 
       const innerText = viewWriter.createText(
         config.get('smartfieldBrackets.open') +
@@ -150,6 +134,16 @@ export default class SmartfieldEditing extends Plugin {
         innerText
       )
       return smartfieldView
+    }
+
+    function constructAttributesObject(attributesArray) {
+      const attributesObject = {}
+
+      for (const a in attributesArray) {
+        attributesObject[a[0]] = a[1]
+      }
+
+      return attributesObject
     }
   }
 }
