@@ -6,6 +6,7 @@ import {
 
 import InsertSmartfieldCommand from './commands/InsertSmartfieldCommand'
 import Plugin from '@ckeditor/ckeditor5-core/src/plugin'
+import RefreshSmartfieldListCommand from './commands/RefreshSmartfieldListCommand'
 
 export default class SmartfieldEditing extends Plugin {
   static get requires() {
@@ -19,6 +20,11 @@ export default class SmartfieldEditing extends Plugin {
     this.editor.commands.add(
       'insert_smartfield',
       new InsertSmartfieldCommand(this.editor)
+    )
+
+    this.editor.commands.add(
+      'refresh_smartfields_list',
+      new RefreshSmartfieldListCommand(this.editor)
     )
 
     this.editor.editing.mapper.on(

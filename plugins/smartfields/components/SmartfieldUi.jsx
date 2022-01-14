@@ -1,4 +1,4 @@
-import './Smartfield.css'
+import './Smartfield.css';
 
 // Consider changing styling to event driven plugin
 // https://ckeditor.com/docs/ckeditor5/latest/framework/guides/deep-dive/conversion/conversion-extending-output.html
@@ -7,39 +7,50 @@ import {
   addListToDropdown,
   createDropdown,
   Model
-} from '@ckeditor/ckeditor5-ui'
+} from '@ckeditor/ckeditor5-ui';
 
-import { Collection } from '@ckeditor/ckeditor5-utils'
-import { Plugin } from '@ckeditor/ckeditor5-core'
+import { Collection } from '@ckeditor/ckeditor5-utils';
+import { Plugin } from '@ckeditor/ckeditor5-core';
 
 export default class SmartfieldUi extends Plugin {
+  localCopy;
+
   init() {
-    const { editor } = this
-    const { t } = editor
+    const { editor } = this;
+    const { t } = editor;
+    const smartfields = editor.config.get('smartfieldProps.types') || [];
+    this.localCopy = smartfields;
 
-    const smartfields = editor.config.get('smartfieldProps.types') || []
+    if (!editor.ui) throw 'No EditorUi';
 
-    if (!editor.ui) throw 'No EditorUi'
     editor.ui.componentFactory.add('smartfield', (locale) => {
-      const dropdownView = createDropdown(locale)
+      const dropdownView = createDropdown(locale);
 
       // Because this is only set on init, it's not getting any new values
-      addListToDropdown(dropdownView, getDropdownItemsDefinitions(smartfields))
+      addListToDropdown(dropdownView, getDropdownItemsDefinitions(smartfields));
 
       dropdownView.buttonView.set({
         label: t('Smartfield'),
         tooltip: true,
         withText: true
-      })
+      });
 
       this.listenTo(dropdownView, 'execute', (evt) => {
-        editor.execute('insert_smartfield', evt.source.commandParam)
+        editor.execute('insert_smartfield', evt.source.commandParam);
 
-        editor.editing.view.focus()
-      })
+        editor.editing.view.focus();
+      });
 
-      return dropdownView
-    })
+      return dropdownView;
+    });
+  }
+
+  refresh() {
+    const configList = this.editor.config.get('smartfieldProps');
+    console.log(
+      '🚀 ~ file: InsertSmartfieldCommand.js ~ line 27 ~ InsertSmartfieldCommand ~ refresh ~ configList',
+      configList.getSmartfields()
+    );
   }
 }
 
@@ -53,7 +64,7 @@ function getDropdownItemsDefinitions(smartfields) {
         withText: true
       })
     }))
-  )
+  );
 
-  return itemDefinitions
+  return itemDefinitions;
 }

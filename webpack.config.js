@@ -3,15 +3,15 @@
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
 
-'use strict'
+'use strict';
 
 /* eslint-env node */
 
-const path = require('path')
-const webpack = require('webpack')
-const { bundler, styles } = require('@ckeditor/ckeditor5-dev-utils')
-const CKEditorWebpackPlugin = require('@ckeditor/ckeditor5-dev-webpack-plugin')
-const TerserWebpackPlugin = require('terser-webpack-plugin')
+const path = require('path');
+const webpack = require('webpack');
+const { bundler, styles } = require('@ckeditor/ckeditor5-dev-utils');
+const CKEditorWebpackPlugin = require('@ckeditor/ckeditor5-dev-webpack-plugin');
+const TerserWebpackPlugin = require('terser-webpack-plugin');
 
 module.exports = (env, { mode }) => {
   return {
@@ -66,6 +66,17 @@ module.exports = (env, { mode }) => {
           use: ['raw-loader']
         },
         {
+          test: /\.js(x)?$/,
+          use: [
+            {
+              loader: 'babel-loader',
+              options: {
+                plugins: ['@babel/plugin-proposal-class-properties']
+              }
+            }
+          ]
+        },
+        {
           test: /\.css$/,
           use: [
             {
@@ -90,5 +101,5 @@ module.exports = (env, { mode }) => {
         }
       ]
     }
-  }
-}
+  };
+};
