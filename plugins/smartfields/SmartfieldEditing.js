@@ -82,7 +82,7 @@ export default class SmartfieldEditing extends Plugin {
 
         return modelWriter.createElement(
           'smartfield',
-          constructAttributesObject(viewElement.getAttributes())
+          constructViewToModelAttributes(viewElement.getAttributes())
         )
       }
     })
@@ -91,6 +91,10 @@ export default class SmartfieldEditing extends Plugin {
     conversion.for('editingDowncast').elementToElement({
       model: 'smartfield',
       view: (modelItem, writer) => {
+        console.log(
+          '🚀 ~ file: SmartfieldEditing.js ~ line 94 ~ SmartfieldEditing ~ _defineConverters ~ modelItem',
+          modelItem
+        )
         const viewWriter = writer.writer
 
         const widgetElement = createSmartfieldView(modelItem, viewWriter)
@@ -113,17 +117,20 @@ export default class SmartfieldEditing extends Plugin {
     })
 
     function createSmartfieldView(modelItem, viewWriter) {
-      const value = modelItem.getAttribute('value')
-      const title = modelItem.getAttribute('title')
+      const attributesObject = generatorToObject(modelItem.getAttributes())
+
+      const viewAttributes = constructViewAttributesObject(
+        modelItem.getAttributes()
+      )
 
       const smartfieldView = viewWriter.createContainerElement('span', {
         class: 'smartfield',
-        ...constructAttributesObject(modelItem.getAttributes())
+        ...viewAttributes
       })
 
       const innerText = viewWriter.createText(
         config.get('smartfieldBrackets.open') +
-          (value || title) +
+          (attributesObject['value'] || attributesObject['title']) +
           config.get('smartfieldBrackets.close')
       )
 
@@ -135,11 +142,31 @@ export default class SmartfieldEditing extends Plugin {
       return smartfieldView
     }
 
-    function constructAttributesObject(attributesGenerator) {
+    function generatorToObject(attributesGenerator) {
       const attributesObject = {}
 
       for (const a of attributesGenerator) {
         attributesObject[a[0]] = a[1]
+      }
+
+      return attributesObject
+    }
+
+    function constructViewAttributesObject(attributesGenerator) {
+      const attributesObject = {}
+
+      for (const a of attributesGenerator) {
+        attributesObject[`smartfield-${a[0]}`] = a[1]
+      }
+
+      return attributesObject
+    }
+
+    function constructViewToModelAttributes(attributesGenerator) {
+      const attributesObject = {}
+
+      for (const a of attributesGenerator) {
+        attributesObject[a[0].replace('smartfield-', '')] = a[1]
       }
 
       return attributesObject

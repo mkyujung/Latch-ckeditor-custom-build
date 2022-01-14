@@ -159,7 +159,7 @@ Editor.builtinPlugins = [
   Italic,
   Link,
   LinkImage,
-  List,
+  // List,
   ListStyle,
   // Markdown,
   MediaEmbed,
