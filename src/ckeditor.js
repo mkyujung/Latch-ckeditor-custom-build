@@ -83,6 +83,15 @@ class Context extends ContextBase {}
 // An example of a plugin that provides user data for an editor
 // that uses `Comments` and `RevisionHistory` plugins.
 export class UsersIntegration extends Plugin {
+  // Plugins to include in the context.
+
+  builtinPlugins = [NarrowSidebar, WideSidebar];
+  // Configuration shared between editors:
+
+  defaultConfig = {
+    // Configuration shared between editors:
+    language: 'en'
+  };
   static get requires() {
     return ['Comments'];
   }
@@ -105,14 +114,6 @@ export class UsersIntegration extends Plugin {
     users.defineMe('u1');
   }
 }
-
-// Plugins to include in the context.
-Context.builtinPlugins = [NarrowSidebar, WideSidebar];
-
-Context.defaultConfig = {
-  // Configuration shared between editors:
-  language: 'en'
-};
 
 class Editor extends DecoupledDocumentEditor {}
 
