@@ -46,11 +46,14 @@ export default class SmartfieldUi extends Plugin {
   }
 
   refresh() {
-    const configList = this.editor.config.get('smartfieldProps');
-    console.log(
-      '🚀 ~ file: InsertSmartfieldCommand.js ~ line 27 ~ InsertSmartfieldCommand ~ refresh ~ configList',
-      configList.getSmartfields()
+    console.log('wtf');
+    const getSmartfields = this.editor.config.get(
+      'smartfieldProps.getSmartfields'
     );
+
+    getSmartfields().then((r) => {
+      console.log('domdom', r);
+    });
   }
 }
 

@@ -18,7 +18,7 @@ export default class SmartfieldPlugin extends Plugin {
   }
 
   refresh() {
-    console.log('domdom', 'refresh');
+    console.log('domdom', 'refresh', this);
     const getSmartfields = this.editor.config.get(
       'smartfieldProps.getSmartfields'
     );
