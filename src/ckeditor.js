@@ -3,9 +3,9 @@
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
 import Alignment from '@ckeditor/ckeditor5-alignment/src/alignment.js'
-import Autoformat from '@ckeditor/ckeditor5-autoformat/src/autoformat.js'
 import AutoImage from '@ckeditor/ckeditor5-image/src/autoimage.js'
 import AutoLink from '@ckeditor/ckeditor5-link/src/autolink.js'
+import Autoformat from '@ckeditor/ckeditor5-autoformat/src/autoformat.js'
 import Autosave from '@ckeditor/ckeditor5-autosave/src/autosave.js'
 import Base64UploadAdapter from '@ckeditor/ckeditor5-upload/src/adapters/base64uploadadapter.js'
 import BlockQuote from '@ckeditor/ckeditor5-block-quote/src/blockquote.js'
@@ -49,7 +49,6 @@ import MediaEmbed from '@ckeditor/ckeditor5-media-embed/src/mediaembed.js'
 import MediaEmbedToolbar from '@ckeditor/ckeditor5-media-embed/src/mediaembedtoolbar.js'
 import Mention from '@ckeditor/ckeditor5-mention/src/mention.js'
 import NarrowSidebar from '@ckeditor/ckeditor5-comments/src/annotations/narrowsidebar'
-import packagejson from '../package.json'
 import PageBreak from '@ckeditor/ckeditor5-page-break/src/pagebreak.js'
 import Pagination from '@ckeditor/ckeditor5-pagination/src/pagination.js'
 import Paragraph from '@ckeditor/ckeditor5-paragraph/src/paragraph.js'
@@ -80,6 +79,7 @@ import TrackChanges from '@ckeditor/ckeditor5-track-changes/src/trackchanges'
 import Underline from '@ckeditor/ckeditor5-basic-styles/src/underline.js'
 import WideSidebar from '@ckeditor/ckeditor5-comments/src/annotations/widesidebar'
 import WordCount from '@ckeditor/ckeditor5-word-count/src/wordcount.js'
+import packagejson from '../package.json'
 
 class Context extends ContextBase {}
 // An example of a plugin that provides user data for an editor
@@ -285,7 +285,7 @@ const CkModule = {
   Editor,
   Context,
   ContextWatchdog,
-  packageVersion: 25,
-  sanitySalt: Date.now()
+  packageVersion: 27,
+  sanitySalt: new Date()
 }
 export default CkModule

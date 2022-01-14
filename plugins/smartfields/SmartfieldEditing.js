@@ -118,8 +118,6 @@ export default class SmartfieldEditing extends Plugin {
 
       const smartfieldView = viewWriter.createContainerElement('span', {
         class: 'smartfield',
-        title,
-        value,
         ...constructAttributesObject(modelItem.getAttributes())
       })
 
@@ -133,13 +131,14 @@ export default class SmartfieldEditing extends Plugin {
         viewWriter.createPositionAt(smartfieldView, 0),
         innerText
       )
+
       return smartfieldView
     }
 
-    function constructAttributesObject(attributesArray) {
+    function constructAttributesObject(attributesGenerator) {
       const attributesObject = {}
 
-      for (const a in attributesArray) {
+      for (const a of attributesGenerator) {
         attributesObject[a[0]] = a[1]
       }
 
