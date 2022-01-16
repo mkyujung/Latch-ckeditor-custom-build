@@ -290,7 +290,7 @@ const CkModule = {
   Editor,
   Context,
   ContextWatchdog,
-  packageVersion: 29,
+  packageVersion: 30,
   sanitySalt: new Date(),
   SmartfieldsRepositoryCommands
 };

@@ -1,1 +1,1 @@
-export { default as SmartfieldPlugin } from './SmartfieldPlugin'
+export { default as SmartfieldPlugin } from './SmartfieldPlugin';

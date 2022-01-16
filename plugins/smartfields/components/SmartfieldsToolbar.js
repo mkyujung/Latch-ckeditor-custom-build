@@ -13,16 +13,17 @@ import { Collection } from '@ckeditor/ckeditor5-utils';
 import Plugin from '@ckeditor/ckeditor5-core/src/plugin';
 import SmartfieldsRepository from '../../smartfields-repository/SmartfieldsRepository';
 
-export default class SmartfieldUi extends Plugin {
+export default class SmartfielsToolbar extends Plugin {
   static get requires() {
     return [SmartfieldsRepository];
   }
 
   init() {
+    console.log('ui init');
     const { editor } = this;
     const { t } = editor;
-    const smartfields = editor.config.get('smartfieldProps.types') || [];
-    // const srepo = editor.plugins.get(SmartfieldsRepository.pluginName);
+    const smartfields =
+      editor.config.get('smartfieldProps.initialSmartfields') || [];
 
     if (!editor.ui) throw 'No EditorUi';
 
@@ -46,9 +47,22 @@ export default class SmartfieldUi extends Plugin {
 
       return dropdownView;
     });
+
+    const srepo = editor.plugins.get(SmartfieldsRepository.pluginName);
+    console.log(
+      '🚀 ~ file: SmartfieldsToolbar.js ~ line 52 ~ SmartfielsToolbar ~ init ~ srepo',
+      srepo
+    );
+
+    srepo.on('change:smartfields', (...params) => console.log('aiya', params));
+    // this.listenTo(srepo, 'change:smartfields', (...wtf) =>
+    //   console.log('HOHO', wtf)
+    // );
   }
 
-  refresh() {}
+  refresh() {
+    console.log('log toolbar');
+  }
 }
 
 function getDropdownItemsDefinitions(smartfields) {
