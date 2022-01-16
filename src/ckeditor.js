@@ -1,3 +1,8 @@
+import {
+  SmartfieldsRepository,
+  SmartfieldsRepositoryCommands
+} from '../plugins/smartfields-repository';
+
 /**
  * @license Copyright (c) 2014-2022, CKSource - Frederico Knabben. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
@@ -170,6 +175,7 @@ Editor.builtinPlugins = [
   PasteFromOffice,
   // Placeholder,
   SmartfieldPlugin,
+  SmartfieldsRepository,
   RemoveFormat,
   SpecialCharacters,
   SpecialCharactersArrows,
@@ -284,7 +290,8 @@ const CkModule = {
   Editor,
   Context,
   ContextWatchdog,
-  packageVersion: 28,
-  sanitySalt: new Date()
+  packageVersion: 29,
+  sanitySalt: new Date(),
+  SmartfieldsRepositoryCommands
 };
 export default CkModule;

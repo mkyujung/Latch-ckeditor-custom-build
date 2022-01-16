@@ -10,16 +10,19 @@ import {
 } from '@ckeditor/ckeditor5-ui';
 
 import { Collection } from '@ckeditor/ckeditor5-utils';
-import { Plugin } from '@ckeditor/ckeditor5-core';
+import Plugin from '@ckeditor/ckeditor5-core/src/plugin';
+import SmartfieldsRepository from '../../smartfields-repository/SmartfieldsRepository';
 
 export default class SmartfieldUi extends Plugin {
-  localCopy;
+  static get requires() {
+    return [SmartfieldsRepository];
+  }
 
   init() {
     const { editor } = this;
     const { t } = editor;
     const smartfields = editor.config.get('smartfieldProps.types') || [];
-    this.localCopy = smartfields;
+    // const srepo = editor.plugins.get(SmartfieldsRepository.pluginName);
 
     if (!editor.ui) throw 'No EditorUi';
 
@@ -45,16 +48,7 @@ export default class SmartfieldUi extends Plugin {
     });
   }
 
-  refresh() {
-    console.log('wtf');
-    const getSmartfields = this.editor.config.get(
-      'smartfieldProps.getSmartfields'
-    );
-
-    getSmartfields().then((r) => {
-      console.log('domdom', r);
-    });
-  }
+  refresh() {}
 }
 
 function getDropdownItemsDefinitions(smartfields) {
