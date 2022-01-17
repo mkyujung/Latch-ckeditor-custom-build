@@ -1,5 +1,3 @@
-import './Smartfield.css';
-
 // Consider changing styling to event driven plugin
 // https://ckeditor.com/docs/ckeditor5/latest/framework/guides/deep-dive/conversion/conversion-extending-output.html
 // So the plugin can be removed for pdf renders
