@@ -1,3 +1,10 @@
-export { default as RefreshSmartfieldsListCommand } from './RefreshSmartfieldListCommand';
+import RefreshSmartfieldsListCommand from './RefreshSmartfieldListCommand';
+import UpdateSmartfieldCommand from './UpdateSmartfieldCommand';
 
-export { SmartfieldsRepositoryCommands } from './commands';
+const SmartfieldsRepositoryCommands = {
+  RefreshSmartfieldsListCommand,
+  UpdateSmartfieldCommand
+};
+
+export { RefreshSmartfieldsListCommand, UpdateSmartfieldCommand };
+export default SmartfieldsRepositoryCommands;

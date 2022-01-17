@@ -18,9 +18,8 @@ export default class SmartfieldEditing extends Plugin {
     this._defineSchema();
     this._defineConverters();
 
-    this.onClickHandler = this.editor.config.get('smartfieldProps.onClick');
     this.editor.commands.add(
-      'insert_smartfield',
+      InsertSmartfieldCommand.eventId,
       new InsertSmartfieldCommand(this.editor)
     );
 
@@ -35,6 +34,7 @@ export default class SmartfieldEditing extends Plugin {
       open: '{',
       close: '}'
     });
+    this.onClickHandler = this.editor.config.get('smartfieldProps.onClick');
   }
 
   _defineSchema() {
@@ -65,7 +65,7 @@ export default class SmartfieldEditing extends Plugin {
     // UI to Model
     conversion.for('upcast').elementToElement({
       view: {
-        name: 'span',
+        name: 'button',
         classes: ['smartfield']
       },
       model: (viewElement, writer) => {
@@ -118,11 +118,11 @@ export default class SmartfieldEditing extends Plugin {
         modelItem.getAttributes()
       );
 
-      const smartfieldView = viewWriter.createContainerElement('span', {
+      const smartfieldView = viewWriter.createContainerElement('button', {
         class: 'smartfield',
-        onclick: this.onClickHandler,
         ...viewAttributes
       });
+      smartfieldView.on('click', () => console.log('heyeheyeheyhe'));
 
       const innerText = viewWriter.createText(
         config.get('smartfieldBrackets.open') +

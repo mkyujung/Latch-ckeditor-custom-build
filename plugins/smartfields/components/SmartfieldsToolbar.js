@@ -8,6 +8,7 @@ import {
 } from '@ckeditor/ckeditor5-ui';
 
 import { Collection } from '@ckeditor/ckeditor5-utils';
+import InsertSmartfieldCommand from '../commands/InsertSmartfieldCommand';
 import Plugin from '@ckeditor/ckeditor5-core/src/plugin';
 import SmartfieldsRepository from '../../smartfields-repository/SmartfieldsRepository';
 
@@ -46,7 +47,10 @@ export default class SmartfielsToolbar extends Plugin {
       });
 
       this.listenTo(this.dropdownRef, 'execute', (evt) => {
-        editor.execute('insert_smartfield', evt.source.commandParam);
+        editor.execute(
+          InsertSmartfieldCommand.eventId,
+          evt.source.commandParam
+        );
 
         editor.editing.view.focus();
       });

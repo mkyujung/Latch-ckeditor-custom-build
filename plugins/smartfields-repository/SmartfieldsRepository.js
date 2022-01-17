@@ -1,12 +1,11 @@
 import {
   RefreshSmartfieldsListCommand,
-  SmartfieldsRepositoryCommands
+  UpdateSmartfieldCommand
 } from './commands';
 
 import mix from '@ckeditor/ckeditor5-utils/src/mix';
 import ObservableMixin from '@ckeditor/ckeditor5-utils/src/observablemixin';
 import Plugin from '@ckeditor/ckeditor5-core/src/plugin';
-import UpdateSmartfieldCommand from './commands/UpdateSmartfieldCommand';
 
 class SmartfieldsRepository extends Plugin {
   static get pluginName() {
@@ -33,17 +32,17 @@ class SmartfieldsRepository extends Plugin {
 
     // Register
     this.editor.commands.add(
-      SmartfieldsRepositoryCommands.RefreshSmartfieldsList,
+      RefreshSmartfieldsListCommand.eventId,
       new RefreshSmartfieldsListCommand(this.editor)
     );
     this.editor.commands.add(
-      SmartfieldsRepositoryCommands.UpdateSmartfield,
+      UpdateSmartfieldCommand.eventId,
       new UpdateSmartfieldCommand(this.editor)
     );
 
     // Handlers
     this.editor.on(
-      SmartfieldsRepositoryCommands.RefreshSmartfieldsList,
+      RefreshSmartfieldsListCommand.eventId,
       this._handleRefreshSmartfieldList.bind(this)
     );
 
