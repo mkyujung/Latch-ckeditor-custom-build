@@ -6,10 +6,15 @@ import {
   Widget
 } from '@ckeditor/ckeditor5-widget';
 
+import { ClickObserver } from '@ckeditor/ckeditor5-engine';
 import InsertSmartfieldCommand from './commands/InsertSmartfieldCommand';
 import Plugin from '@ckeditor/ckeditor5-core/src/plugin';
 
 export default class SmartfieldEditing extends Plugin {
+  static get pluginName() {
+    return 'SmartfieldEditing';
+  }
+
   static get requires() {
     return [Widget];
   }
@@ -34,7 +39,26 @@ export default class SmartfieldEditing extends Plugin {
       open: '{',
       close: '}'
     });
-    this.onClickHandler = this.editor.config.get('smartfieldProps.onClick');
+
+    // Don't like this but it gets click handlers working
+    this.onClickHandler = this.editor.config.get('smartfieldProps').onClick;
+
+    if (typeof this.onClickHandler === 'function') {
+      this.editor.editing.view.addObserver(ClickObserver);
+      const viewDocument = this.editor.editing.view.document;
+
+      this.editor.listenTo(viewDocument, 'click', (evt, data) => {
+        const modelElement = this.editor.editing.mapper.toModelElement(
+          data.target
+        );
+
+        if (modelElement.name == 'smartfield') {
+          console.log('smartfield has been clicked.', modelElement);
+
+          this.onClickHandler(modelElement.getAttribute('id'));
+        }
+      });
+    }
   }
 
   _defineSchema() {
@@ -93,12 +117,8 @@ export default class SmartfieldEditing extends Plugin {
         const viewWriter = writer.writer;
 
         const widgetElement = createSmartfieldView(modelItem, viewWriter);
-
-        // Enable widget handling on placeholder element inside editing view.
         const resultWidget = toWidget(widgetElement, viewWriter);
-        resultWidget.on('click', (info) =>
-          console.log('editing doc click', info)
-        );
+
         return resultWidget;
       }
     });
@@ -108,7 +128,6 @@ export default class SmartfieldEditing extends Plugin {
       model: 'smartfield',
       view: (modelItem, writer) => {
         const viewWriter = writer.writer;
-
         return createSmartfieldView(modelItem, viewWriter);
       }
     });
@@ -122,7 +141,6 @@ export default class SmartfieldEditing extends Plugin {
         class: 'smartfield',
         ...viewAttributes
       });
-      smartfieldView.on('click', () => console.log('heyeheyeheyhe'));
 
       const innerText = viewWriter.createText(
         config.get('smartfieldBrackets.open') +
