@@ -15,18 +15,15 @@ class SmartfieldsRepository extends Plugin {
 
   constructor(editor) {
     super(editor);
+    this.bind('smartfields');
   }
 
   init() {
     const { editor } = this;
     const initial =
       editor.config.get('smartfieldProps.initialSmartfields') || [];
-    console.log(
-      '🚀 ~ file: SmartfieldsRepository.js ~ line 29 ~ SmartfieldsRepository ~ init ~ initial',
-      initial
-    );
-    this.smartfields = initial;
-    // this.set('smartfields', initial);
+
+    this.set('smartfields', initial);
 
     // Register
     this.editor.commands.add(
@@ -45,26 +42,18 @@ class SmartfieldsRepository extends Plugin {
     );
 
     // Observable change
-    this.on('change:smartfields', (evt, propertyName, newValue, oldValue) => {
-      console.log(
-        `#${propertyName} has changed from "${oldValue}" to "${newValue}"`
-      );
-    });
+    // this.on('change:smartfields', (evt, propertyName, newValue, oldValue) => {
+    //   console.log(
+    //     `#${propertyName} has changed from "${oldValue}" to "${newValue}"`
+    //   );
+    // });
   }
 
   _handleRefreshSmartfieldList(event, params) {
-    console.log(
-      '🚀 ~ file: SmartfieldsRepository.js ~ line 37 ~ SmartfieldsRepository ~ _handleRefreshSmartfieldList ~ event',
-      this.smartfields,
-      'params',
-      params
-    );
-
-    // this.set('smartfields', params);
-    this.smartfields = params;
+    this.set('smartfields', params);
   }
 }
 
-// mix(SmartfieldsRepository, ObservableMixin);
+mix(SmartfieldsRepository, ObservableMixin);
 
 export default SmartfieldsRepository;

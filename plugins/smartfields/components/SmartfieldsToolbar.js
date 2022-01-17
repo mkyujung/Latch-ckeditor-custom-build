@@ -19,17 +19,52 @@ export default class SmartfielsToolbar extends Plugin {
   }
 
   init() {
-    console.log('ui init');
     const { editor } = this;
-    const { t } = editor;
-    const smartfields =
+    // const { t } = editor;
+    const initialSmartfields =
       editor.config.get('smartfieldProps.initialSmartfields') || [];
 
-    if (!editor.ui) throw 'No EditorUi';
+    this._createDropdownUi.call(this, editor, initialSmartfields);
+
+    const repository = editor.plugins.get(SmartfieldsRepository.pluginName);
+
+    repository.on(
+      'change:smartfields',
+      (evt, propertyName, newValue, oldValue) => {
+        console.log('change listener');
+        this._handleSmartfieldsChanged.bind(this)(newValue);
+      }
+    );
+  }
+
+  refresh() {
+    console.log('log toolbar');
+  }
+
+  _handleSmartfieldsChanged(smartfields) {
+    console.log('handler');
+    if (this.dropdownRef) {
+      console.log('destroy?', this.dropdownRef);
+
+      // Remove existing dropdown
+      this.dropdownRef.panelView.children.clear();
+
+      addListToDropdown(
+        this.dropdownRef,
+        getDropdownItemsDefinitions(smartfields)
+      );
+    }
+  }
+
+  _createDropdownUi(editor, smartfields) {
+    console.log('create');
+    const { t } = editor;
+    let dropdownRef;
 
     editor.ui.componentFactory.add('smartfield', (locale) => {
       const dropdownView = createDropdown(locale);
-
+      this.dropdownRef = dropdownView;
+      dropdownRef = dropdownView;
       // Because this is only set on init, it's not getting any new values
       addListToDropdown(dropdownView, getDropdownItemsDefinitions(smartfields));
 
@@ -47,21 +82,8 @@ export default class SmartfielsToolbar extends Plugin {
 
       return dropdownView;
     });
-
-    const srepo = editor.plugins.get(SmartfieldsRepository.pluginName);
-    console.log(
-      '🚀 ~ file: SmartfieldsToolbar.js ~ line 52 ~ SmartfielsToolbar ~ init ~ srepo',
-      srepo
-    );
-
-    srepo.on('change:smartfields', (...params) => console.log('aiya', params));
-    // this.listenTo(srepo, 'change:smartfields', (...wtf) =>
-    //   console.log('HOHO', wtf)
-    // );
-  }
-
-  refresh() {
-    console.log('log toolbar');
+    console.log('return', dropdownRef);
+    return dropdownRef;
   }
 }
 
