@@ -20,6 +20,12 @@ class SmartfieldsRepository extends Plugin {
 
   init() {
     const { editor } = this;
+
+    // I don't know what this does, guess it initializes default config?
+    editor.config.define('smartfieldProps', {
+      initialSmartfields: []
+    });
+
     const initial =
       editor.config.get('smartfieldProps.initialSmartfields') || [];
 
