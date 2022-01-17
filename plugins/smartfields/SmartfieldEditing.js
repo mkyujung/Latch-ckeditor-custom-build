@@ -1,3 +1,5 @@
+import './components/Smartfield.css';
+
 import {
   toWidget,
   viewToModelPositionOutsideModelElement,
@@ -16,6 +18,7 @@ export default class SmartfieldEditing extends Plugin {
     this._defineSchema();
     this._defineConverters();
 
+    this.onClickHandler = this.editor.config.get('smartfieldProps.onClick');
     this.editor.commands.add(
       'insert_smartfield',
       new InsertSmartfieldCommand(this.editor)
@@ -27,10 +30,6 @@ export default class SmartfieldEditing extends Plugin {
         viewElement.hasClass('smartfield')
       )
     );
-
-    this.editor.config.define('smartfieldProps', {
-      types: []
-    });
 
     this.editor.config.define('smartfieldBrackets', {
       open: '{',
@@ -97,7 +96,9 @@ export default class SmartfieldEditing extends Plugin {
 
         // Enable widget handling on placeholder element inside editing view.
         const resultWidget = toWidget(widgetElement, viewWriter);
-
+        resultWidget.on('click', (info) =>
+          console.log('editing doc click', info)
+        );
         return resultWidget;
       }
     });
@@ -113,20 +114,21 @@ export default class SmartfieldEditing extends Plugin {
     });
 
     function createSmartfieldView(modelItem, viewWriter) {
-      const attributesObject = generatorToObject(modelItem.getAttributes());
-
       const viewAttributes = constructViewAttributesObject(
         modelItem.getAttributes()
       );
 
       const smartfieldView = viewWriter.createContainerElement('span', {
         class: 'smartfield',
+        onclick: this.onClickHandler,
         ...viewAttributes
       });
 
       const innerText = viewWriter.createText(
         config.get('smartfieldBrackets.open') +
-          (attributesObject['value'] || attributesObject['title']) +
+          // Show value, else fallback to title
+          (viewAttributes['smartfield-value'] ||
+            viewAttributes['smartfield-title']) +
           config.get('smartfieldBrackets.close')
       );
 
@@ -136,16 +138,6 @@ export default class SmartfieldEditing extends Plugin {
       );
 
       return smartfieldView;
-    }
-
-    function generatorToObject(attributesGenerator) {
-      const attributesObject = {};
-
-      for (const a of attributesGenerator) {
-        attributesObject[a[0]] = a[1];
-      }
-
-      return attributesObject;
     }
 
     function constructViewAttributesObject(attributesGenerator) {
