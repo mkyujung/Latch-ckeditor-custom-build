@@ -20,32 +20,45 @@ export default class SmartfielsToolbar extends Plugin {
 
   init() {
     const { editor } = this;
-    // const { t } = editor;
+    const { t } = editor;
     const initialSmartfields =
       editor.config.get('smartfieldProps.initialSmartfields') || [];
-
-    this._createDropdownUi.call(this, editor, initialSmartfields);
-
     const repository = editor.plugins.get(SmartfieldsRepository.pluginName);
 
     repository.on(
       'change:smartfields',
       (evt, propertyName, newValue, oldValue) => {
-        console.log('change listener');
-        this._handleSmartfieldsChanged.bind(this)(newValue);
+        this._handleSmartfieldsChanged.call(this, newValue);
       }
     );
-  }
 
-  refresh() {
-    console.log('log toolbar');
+    editor.ui.componentFactory.add('smartfield', (locale) => {
+      this.dropdownRef = createDropdown(locale);
+
+      // Because this is only set on init, it's not getting any new values
+      addListToDropdown(
+        this.dropdownRef,
+        getDropdownItemsDefinitions(initialSmartfields)
+      );
+
+      this.dropdownRef.buttonView.set({
+        label: t('Smartfield'),
+        tooltip: true,
+        withText: true
+      });
+
+      this.listenTo(this.dropdownRef, 'execute', (evt) => {
+        editor.execute('insert_smartfield', evt.source.commandParam);
+
+        editor.editing.view.focus();
+      });
+
+      return this.dropdownRef;
+    });
   }
 
   _handleSmartfieldsChanged(smartfields) {
-    console.log('handler');
     if (this.dropdownRef) {
-      console.log('destroy?', this.dropdownRef);
-
       // Remove existing dropdown
       this.dropdownRef.panelView.children.clear();
 
@@ -54,36 +67,6 @@ export default class SmartfielsToolbar extends Plugin {
         getDropdownItemsDefinitions(smartfields)
       );
     }
-  }
-
-  _createDropdownUi(editor, smartfields) {
-    console.log('create');
-    const { t } = editor;
-    let dropdownRef;
-
-    editor.ui.componentFactory.add('smartfield', (locale) => {
-      const dropdownView = createDropdown(locale);
-      this.dropdownRef = dropdownView;
-      dropdownRef = dropdownView;
-      // Because this is only set on init, it's not getting any new values
-      addListToDropdown(dropdownView, getDropdownItemsDefinitions(smartfields));
-
-      dropdownView.buttonView.set({
-        label: t('Smartfield'),
-        tooltip: true,
-        withText: true
-      });
-
-      this.listenTo(dropdownView, 'execute', (evt) => {
-        editor.execute('insert_smartfield', evt.source.commandParam);
-
-        editor.editing.view.focus();
-      });
-
-      return dropdownView;
-    });
-    console.log('return', dropdownRef);
-    return dropdownRef;
   }
 }
 
