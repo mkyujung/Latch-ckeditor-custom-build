@@ -30,11 +30,12 @@ class SmartfieldsRepository extends Plugin {
 
     this.set('smartfields', initial);
 
-    // Register
+    // Register commands
     this.editor.commands.add(
       RefreshSmartfieldsListCommand.eventId,
       new RefreshSmartfieldsListCommand(this.editor)
     );
+
     this.editor.commands.add(
       UpdateSmartfieldCommand.eventId,
       new UpdateSmartfieldCommand(this.editor)
@@ -55,7 +56,7 @@ class SmartfieldsRepository extends Plugin {
   }
 
   _handleRefreshSmartfieldList(event, params) {
-    this.set('smartfields', params);
+    this.set('smartfields', [...params]);
   }
 }
 
