@@ -285,12 +285,16 @@ Editor.defaultConfig = {
   }
 };
 
-const CkModule = {
+const packageVersion = 33,
+  buildTime = new Date();
+
+const CustomModule = {
   Editor,
   Context,
-  packageVersion: 33,
-  buildTime: new Date(),
+  packageVersion,
+  buildTime,
+  // Have to spread commands as part of module
   ...SmartfieldsRepositoryCommands
 };
 
-export default CkModule;
+export default CustomModule;

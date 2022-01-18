@@ -60,6 +60,10 @@ export default class SmartfielsToolbar extends Plugin {
   }
 
   _handleSmartfieldsChanged(smartfields) {
+    console.log(
+      '🚀 ~ file: SmartfieldsToolbar.js ~ line 63 ~ SmartfielsToolbar ~ _handleSmartfieldsChanged ~ smartfields',
+      smartfields
+    );
     if (this.dropdownRef) {
       // Remove existing dropdown
       this.dropdownRef.panelView.children.clear();
