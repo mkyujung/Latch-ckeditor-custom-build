@@ -1,6 +1,1 @@
-import InsertSmartfieldCommand from './InsertSmartfieldCommand';
-
-const smartfieldCommands = { InsertSmartfieldCommand };
-
-export { InsertSmartfieldCommand };
-export default smartfieldCommands;
+export { default as InsertSmartfieldCommand } from './InsertSmartfieldCommand';
