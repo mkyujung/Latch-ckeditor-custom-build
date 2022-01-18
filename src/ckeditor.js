@@ -1,3 +1,6 @@
+// export default CkModule;
+import * as SmartfieldsRepositoryCommands from '../plugins/smartfields-repository/commands';
+
 /**
  * @license Copyright (c) 2014-2022, CKSource - Frederico Knabben. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
@@ -54,10 +57,8 @@ import Paragraph from '@ckeditor/ckeditor5-paragraph/src/paragraph';
 import PasteFromOffice from '@ckeditor/ckeditor5-paste-from-office/src/pastefromoffice';
 import Plugin from '@ckeditor/ckeditor5-core/src/plugin';
 import RemoveFormat from '@ckeditor/ckeditor5-remove-format/src/removeformat';
-import SmartfieldCommands from '../plugins/smartfields/commands';
 import { SmartfieldPlugin } from '../plugins/smartfields';
 import { SmartfieldsRepository } from '../plugins/smartfields-repository';
-import SmartfieldsRepositoryCommands from '../plugins/smartfields-repository/commands';
 import SpecialCharacters from '@ckeditor/ckeditor5-special-characters/src/specialcharacters';
 import SpecialCharactersArrows from '@ckeditor/ckeditor5-special-characters/src/specialcharactersarrows';
 import SpecialCharactersCurrency from '@ckeditor/ckeditor5-special-characters/src/specialcharacterscurrency';
@@ -287,10 +288,9 @@ Editor.defaultConfig = {
 const CkModule = {
   Editor,
   Context,
-  ContextWatchdog,
-  packageVersion: 31,
-  sanitySalt: new Date(),
-  SmartfieldCommands,
-  SmartfieldsRepositoryCommands
+  packageVersion: 33,
+  buildTime: new Date(),
+  ...SmartfieldsRepositoryCommands
 };
+
 export default CkModule;
