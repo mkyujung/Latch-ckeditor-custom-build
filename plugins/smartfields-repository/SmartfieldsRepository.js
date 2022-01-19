@@ -57,7 +57,52 @@ class SmartfieldsRepository extends Plugin {
 
   _handleRefreshSmartfieldList(event, params) {
     this.set('smartfields', [...params]);
+    this._updateModel(params);
   }
+
+  _updateModel(smartfieldsList) {
+    const docRoot = this.editor.model.document.getRoot();
+    const range = this.editor.model.createRangeIn(docRoot);
+
+    const matchedSmartfields = [];
+    // Iterate over all items in this range:
+    for (const value of range.getWalker()) {
+      switch (value.type) {
+        case 'elementStart':
+          if (isSmartfield(value.item)) {
+            const smartfield = smartfieldsList.find(
+              (s) => s.id === value.item.getAttribute('id')
+            );
+            if (smartfield) {
+              matchedSmartfields.push([value.item, smartfield]);
+            }
+          }
+      }
+    }
+    for (const [match, smartfield] of matchedSmartfields) {
+      this.editor.model.change((writer) => {
+        const itemStart = this.editor.model.createSelection(match, 'before');
+        const itemSelection = this.editor.model.createSelection(match, 'on');
+
+        this.editor.model.deleteContent(itemSelection);
+        this.editor.model.insertContent(
+          writer.createElement('smartfield', smartfield),
+          itemStart,
+          'after'
+        );
+        console.log(
+          '🚀 ~ file: SmartfieldsRepository.js ~ line 89 ~ SmartfieldsRepository ~ this.editor.model.change ~ smartfield',
+          smartfield,
+          itemStart,
+          itemSelection
+        );
+      });
+    }
+  }
+}
+
+function isSmartfield(element) {
+  return element.name === 'smartfield';
 }
 
 mix(SmartfieldsRepository, ObservableMixin);
