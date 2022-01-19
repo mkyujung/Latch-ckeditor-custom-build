@@ -40,4 +40,8 @@ export default class SmartfieldUI extends Plugin {
       return buttonView;
     });
   }
+
+  refresh() {
+    this.isEnabled = !this.editor.isReadOnly;
+  }
 }

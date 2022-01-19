@@ -15,7 +15,7 @@ export default class InsertSmartfieldCommand extends Command {
 
   // This method runs on every UI change? * still investigating *
   refresh() {
-    const { model } = this.editor;
+    const { isReadOnly, model } = this.editor;
     const { selection } = model.document;
 
     const isAllowed = model.schema.checkChild(
@@ -23,6 +23,6 @@ export default class InsertSmartfieldCommand extends Command {
       'smartfield'
     );
 
-    this.isEnabled = isAllowed;
+    this.isEnabled = isAllowed || isReadOnly;
   }
 }

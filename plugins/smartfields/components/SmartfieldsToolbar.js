@@ -45,6 +45,9 @@ export default class SmartfielsToolbar extends Plugin {
         tooltip: true,
         withText: true
       });
+      const command = this.editor.commands.get(InsertSmartfieldCommand.eventId);
+
+      this.dropdownRef.bind('isEnabled').to(command, 'isEnabled');
 
       this.listenTo(this.dropdownRef, 'execute', (evt) => {
         editor.execute(
@@ -57,6 +60,10 @@ export default class SmartfielsToolbar extends Plugin {
 
       return this.dropdownRef;
     });
+  }
+
+  refresh() {
+    this.isEnabled = !this.editor.isReadOnly;
   }
 
   _handleSmartfieldsChanged(smartfields) {
