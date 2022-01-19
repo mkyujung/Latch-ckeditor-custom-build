@@ -30,7 +30,9 @@ module.exports = (env, { mode }) => {
       libraryTarget: 'umd',
       libraryExport: 'default'
     },
-
+    resolve: {
+      extensions: ['.ts', '.tsx', '.js', '.json']
+    },
     optimization: {
       minimizer: [
         new TerserWebpackPlugin({
@@ -66,11 +68,12 @@ module.exports = (env, { mode }) => {
           use: ['raw-loader']
         },
         {
-          test: /\.js(x)?$/,
+          test: /\.(t|j)s(x)?$/,
           use: [
             {
               loader: 'babel-loader',
               options: {
+                presets: ['@babel/preset-typescript'],
                 plugins: ['@babel/plugin-proposal-class-properties']
               }
             }
