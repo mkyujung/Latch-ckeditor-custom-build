@@ -90,12 +90,6 @@ class SmartfieldsRepository extends Plugin {
           itemStart,
           'after'
         );
-        console.log(
-          '🚀 ~ file: SmartfieldsRepository.js ~ line 89 ~ SmartfieldsRepository ~ this.editor.model.change ~ smartfield',
-          smartfield,
-          itemStart,
-          itemSelection
-        );
       });
     }
   }

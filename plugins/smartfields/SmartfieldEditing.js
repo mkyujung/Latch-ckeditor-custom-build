@@ -42,6 +42,10 @@ export default class SmartfieldEditing extends Plugin {
 
     // Don't like this but it gets click handlers working
     this.onClickHandler = this.editor.config.get('smartfieldProps').onClick;
+    console.log(
+      '🚀 ~ file: SmartfieldEditing.js ~ line 45 ~ SmartfieldEditing ~ init ~ onClickHandler',
+      this.onClickHandler
+    );
 
     if (typeof this.onClickHandler === 'function') {
       this.editor.editing.view.addObserver(ClickObserver);
