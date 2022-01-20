@@ -6,8 +6,7 @@ import {
   Widget
 } from '@ckeditor/ckeditor5-widget';
 
-import { ButtonView } from '@ckeditor/ckeditor5-ui';
-import { ClickObserver } from '@ckeditor/ckeditor5-engine';
+import { getSmartfieldElementsInDocument } from '../../utils';
 import InsertSmartfieldCommand from './commands/InsertSmartfieldCommand';
 import Plugin from '@ckeditor/ckeditor5-core/src/plugin';
 
@@ -24,8 +23,6 @@ export default class SmartfieldEditing extends Plugin {
     this._defineSchema();
     this._defineConverters();
 
-    // this.editor.conversion.for('downcast').add(downcastTest(this.editor));
-
     this.editor.commands.add(
       InsertSmartfieldCommand.eventId,
       new InsertSmartfieldCommand(this.editor)
@@ -37,11 +34,6 @@ export default class SmartfieldEditing extends Plugin {
         viewElement.hasClass('smartfield')
       )
     );
-
-    this.editor.config.define('smartfieldBrackets', {
-      open: '{',
-      close: '}'
-    });
 
     // Don't like this but it gets click handlers working
     this.onClickHandler = this.editor.config.get('smartfieldProps').onClick;
@@ -95,7 +87,6 @@ export default class SmartfieldEditing extends Plugin {
         // Recheck this list to match smartfield properties
         // Best if it's short and has referential synchronisity with
         // document metadata smartfields array
-        'color',
         'counterPartyToProvide',
         'id',
         'showCounterPartyToProvideCheckbox',
@@ -107,7 +98,7 @@ export default class SmartfieldEditing extends Plugin {
   }
 
   _defineConverters() {
-    const { conversion, config } = this.editor;
+    const { conversion } = this.editor;
 
     // UI to Model
     conversion.for('upcast').elementToElement({
@@ -138,11 +129,8 @@ export default class SmartfieldEditing extends Plugin {
       model: 'smartfield',
       view: (modelItem, writer) => {
         const viewWriter = writer.writer;
-
         const widgetElement = _createSmartfieldView(modelItem, viewWriter);
-        const resultWidget = toWidget(widgetElement, viewWriter);
-
-        return resultWidget;
+        return toWidget(widgetElement, viewWriter);
       }
     });
 
@@ -151,14 +139,9 @@ export default class SmartfieldEditing extends Plugin {
       model: 'smartfield',
       view: (modelItem, writer) => {
         const viewWriter = writer.writer;
-        const smartfieldViewButton = new ButtonView(this.editor.locale);
-        smartfieldViewButton.set({
-          label: 'Test',
-          withText: true
-        });
-        smartfieldViewButton.render();
+        const result = _createSmartfieldView(modelItem, viewWriter);
 
-        return _createSmartfieldView(modelItem, viewWriter);
+        return result;
       }
     });
 
@@ -168,16 +151,13 @@ export default class SmartfieldEditing extends Plugin {
       );
 
       const smartfieldViewButton = viewWriter.createContainerElement('button', {
-        class: 'smartfield',
+        class: `smartfield`,
         ...viewAttributes
       });
 
       const innerText = viewWriter.createText(
-        config.get('smartfieldBrackets.open') +
-          // Show value, else fallback to title
-          (viewAttributes['smartfield-value'] ||
-            viewAttributes['smartfield-title']) +
-          config.get('smartfieldBrackets.close')
+        // Show value, else fallback to title
+        viewAttributes['smartfield-value'] || viewAttributes['smartfield-title']
       );
 
       viewWriter.insert(
@@ -192,7 +172,8 @@ export default class SmartfieldEditing extends Plugin {
       const attributesObject = {};
 
       for (const a of attributesGenerator) {
-        attributesObject[`smartfield-${a[0]}`] = a[1];
+        // Don't map the class attribute
+        if (a[0] !== 'class') attributesObject[`smartfield-${a[0]}`] = a[1];
       }
 
       return attributesObject;
@@ -208,19 +189,4 @@ export default class SmartfieldEditing extends Plugin {
       return attributesObject;
     }
   }
-}
-
-function downcastTest(editor) {
-  return (dispatcher) => {
-    dispatcher.on(
-      'insert:smartfield',
-      (params) => {
-        console.log(
-          '🚀 ~ file: SmartfieldEditing.js ~ line 102 ~ SmartfieldEditing ~ return ~ params',
-          params
-        );
-      },
-      { priority: 'high' }
-    );
-  };
 }

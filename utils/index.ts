@@ -22,3 +22,19 @@ export function* getSmartfieldIdsInDocument(
     }
   }
 }
+
+export function* getSmartfieldElementsInDocument(
+  editor: Editor | EditorWithUI
+): Generator<Element> {
+  const docRoot = editor.model.document.getRoot();
+  const range = editor.model.createRangeIn(docRoot);
+  for (const value of range.getWalker()) {
+    switch (value.type) {
+      case 'elementStart':
+        if (isSmartfield(value.item)) {
+          yield value.item;
+        }
+        break;
+    }
+  }
+}
