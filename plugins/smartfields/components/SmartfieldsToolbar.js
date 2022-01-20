@@ -62,9 +62,9 @@ export default class SmartfielsToolbar extends Plugin {
     });
   }
 
-  refresh() {
-    this.isEnabled = !this.editor.isReadOnly;
-  }
+  // refresh() {
+  //   this.isEnabled = !this.editor.isReadOnly;
+  // }
 
   _handleSmartfieldsChanged(smartfields) {
     if (this.dropdownRef) {

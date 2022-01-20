@@ -6,6 +6,7 @@ import {
   Widget
 } from '@ckeditor/ckeditor5-widget';
 
+import { ButtonView } from '@ckeditor/ckeditor5-ui';
 import { ClickObserver } from '@ckeditor/ckeditor5-engine';
 import InsertSmartfieldCommand from './commands/InsertSmartfieldCommand';
 import Plugin from '@ckeditor/ckeditor5-core/src/plugin';
@@ -22,6 +23,8 @@ export default class SmartfieldEditing extends Plugin {
   init() {
     this._defineSchema();
     this._defineConverters();
+
+    // this.editor.conversion.for('downcast').add(downcastTest(this.editor));
 
     this.editor.commands.add(
       InsertSmartfieldCommand.eventId,
@@ -42,20 +45,42 @@ export default class SmartfieldEditing extends Plugin {
 
     // Don't like this but it gets click handlers working
     this.onClickHandler = this.editor.config.get('smartfieldProps').onClick;
+    this.clickObserver = this._enableClickToEdit(
+      this.editor,
+      this.onClickHandler
+    );
 
-    if (typeof this.onClickHandler === 'function') {
-      this.editor.editing.view.addObserver(ClickObserver);
+    this.set('disableClick', this.editor.isReadOnly);
+    this.bind('disableClick').to(this.editor, 'isReadOnly');
+    this.on('change:disableClick', (info, ...args) => {
+      const disabled = args[1];
+
       const viewDocument = this.editor.editing.view.document;
+      if (disabled) {
+        this.editor.stopListening(viewDocument, 'click');
+      } else {
+        this._enableClickToEdit(this.editor, this.onClickHandler);
+      }
+    });
+  }
 
-      this.editor.listenTo(viewDocument, 'click', (evt, data) => {
-        const modelElement = this.editor.editing.mapper.toModelElement(
-          data.target
-        );
+  _enableClickToEdit(editor, onClickHandler) {
+    // Don't like this but it gets click handlers working
+    this.onClickHandler = editor.config.get('smartfieldProps').onClick;
+
+    if (typeof onClickHandler === 'function') {
+      // const observer = editor.editing.view.addObserver(ClickObserver);
+      const viewDocument = editor.editing.view.document;
+
+      editor.listenTo(viewDocument, 'click', (evt, data) => {
+        const modelElement = editor.editing.mapper.toModelElement(data.target);
 
         if (modelElement.name == 'smartfield') {
-          this.onClickHandler(modelElement.getAttribute('id'));
+          onClickHandler(modelElement.getAttribute('id'));
         }
       });
+
+      // return observer;
     }
   }
 
@@ -103,7 +128,7 @@ export default class SmartfieldEditing extends Plugin {
 
         return modelWriter.createElement(
           'smartfield',
-          constructViewToModelAttributes(viewElement.getAttributes())
+          _constructViewToModelAttributes(viewElement.getAttributes())
         );
       }
     });
@@ -114,7 +139,7 @@ export default class SmartfieldEditing extends Plugin {
       view: (modelItem, writer) => {
         const viewWriter = writer.writer;
 
-        const widgetElement = createSmartfieldView(modelItem, viewWriter);
+        const widgetElement = _createSmartfieldView(modelItem, viewWriter);
         const resultWidget = toWidget(widgetElement, viewWriter);
 
         return resultWidget;
@@ -126,16 +151,23 @@ export default class SmartfieldEditing extends Plugin {
       model: 'smartfield',
       view: (modelItem, writer) => {
         const viewWriter = writer.writer;
-        return createSmartfieldView(modelItem, viewWriter);
+        const smartfieldViewButton = new ButtonView(this.editor.locale);
+        smartfieldViewButton.set({
+          label: 'Test',
+          withText: true
+        });
+        smartfieldViewButton.render();
+
+        return _createSmartfieldView(modelItem, viewWriter);
       }
     });
 
-    function createSmartfieldView(modelItem, viewWriter) {
-      const viewAttributes = constructViewAttributesObject(
+    function _createSmartfieldView(modelItem, viewWriter) {
+      const viewAttributes = _constructViewAttributesObject(
         modelItem.getAttributes()
       );
 
-      const smartfieldView = viewWriter.createContainerElement('button', {
+      const smartfieldViewButton = viewWriter.createContainerElement('button', {
         class: 'smartfield',
         ...viewAttributes
       });
@@ -149,14 +181,14 @@ export default class SmartfieldEditing extends Plugin {
       );
 
       viewWriter.insert(
-        viewWriter.createPositionAt(smartfieldView, 0),
+        viewWriter.createPositionAt(smartfieldViewButton, 0),
         innerText
       );
 
-      return smartfieldView;
+      return smartfieldViewButton;
     }
 
-    function constructViewAttributesObject(attributesGenerator) {
+    function _constructViewAttributesObject(attributesGenerator) {
       const attributesObject = {};
 
       for (const a of attributesGenerator) {
@@ -166,7 +198,7 @@ export default class SmartfieldEditing extends Plugin {
       return attributesObject;
     }
 
-    function constructViewToModelAttributes(attributesGenerator) {
+    function _constructViewToModelAttributes(attributesGenerator) {
       const attributesObject = {};
 
       for (const a of attributesGenerator) {
@@ -176,4 +208,19 @@ export default class SmartfieldEditing extends Plugin {
       return attributesObject;
     }
   }
+}
+
+function downcastTest(editor) {
+  return (dispatcher) => {
+    dispatcher.on(
+      'insert:smartfield',
+      (params) => {
+        console.log(
+          '🚀 ~ file: SmartfieldEditing.js ~ line 102 ~ SmartfieldEditing ~ return ~ params',
+          params
+        );
+      },
+      { priority: 'high' }
+    );
+  };
 }

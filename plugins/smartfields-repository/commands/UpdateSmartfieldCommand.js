@@ -6,4 +6,9 @@ export default class UpdateSmartfieldCommand extends Command {
   execute(commandParams) {
     console.log('Update smartfield command', commandParams);
   }
+
+  // refresh() {
+  //   const { isReadOnly } = this.editor;
+  //   this.isEnabled = !isReadOnly;
+  // }
 }
