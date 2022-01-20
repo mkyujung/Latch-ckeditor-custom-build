@@ -107,14 +107,21 @@ export default class SmartfieldEditing extends Plugin {
         classes: ['smartfield']
       },
       model: (viewElement, writer) => {
-        // Extract the "value" from {value}
-        // const value = viewElement
-        //   .getChild(0)
-        //   .data.slice(
-        //     config.get('smartfieldBrackets.open').length,
-        //     0 - config.get('smartfieldBrackets.close').length
-        //   )
+        const modelWriter = writer.writer;
 
+        return modelWriter.createElement(
+          'smartfield',
+          _constructViewToModelAttributes(viewElement.getAttributes())
+        );
+      }
+    });
+
+    conversion.for('upcast').elementToElement({
+      view: {
+        name: 'button',
+        classes: ['counterparty-smartfield']
+      },
+      model: (viewElement, writer) => {
         const modelWriter = writer.writer;
 
         return modelWriter.createElement(
@@ -149,9 +156,15 @@ export default class SmartfieldEditing extends Plugin {
       const viewAttributes = _constructViewAttributesObject(
         modelItem.getAttributes()
       );
+      const counterPartyToProvide = modelItem.getAttribute(
+        'counterpartytoprovide'
+      );
 
       const smartfieldViewButton = viewWriter.createContainerElement('button', {
-        class: `smartfield`,
+        class:
+          counterPartyToProvide === 'true'
+            ? 'counterparty-smartfield'
+            : 'smartfield',
         ...viewAttributes
       });
 

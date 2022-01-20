@@ -1,14 +1,30 @@
 .smartfield.ck-widget {
-  background: #ffff00;
-  padding: 4px 2px;
-  outline-offset: -2px;
+  background-color: #82bf69;
+  border-radius: 4px;
+  color: white;
   line-height: 1em;
   margin: 0 1px;
+  outline-offset: -2px;
+  padding: 4px 2px;
 }
 
-.ck-read-only .smartfield.ck-widget {
+.counterparty-smartfield.ck-widget {
+  background: rgba(0, 0, 0, 0)
+    repeating-linear-gradient(
+      45deg,
+      rgb(161, 236, 131),
+      rgb(161, 236, 131) 10px,
+      rgb(150, 211, 125) 10px,
+      rgb(150, 211, 125) 20px
+    )
+    repeat scroll 0% 0%;
+  border-radius: 4px;
+}
+
+.ck.ck-read-only [class*='smartfield'].ck-widget {
   background: none;
-  padding: 0;
-  margin: 0;
+  color: inherit;
   cursor: revert;
+  margin: 0;
+  padding: 0;
 }
