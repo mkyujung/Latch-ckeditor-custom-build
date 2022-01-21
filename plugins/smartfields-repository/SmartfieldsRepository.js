@@ -61,6 +61,7 @@ class SmartfieldsRepository extends Plugin {
     this._updateModel(params);
   }
 
+  // This updates the backing CKeditor model with refreshed smartfields
   _updateModel(smartfieldsList) {
     const docRoot = this.editor.model.document.getRoot();
     const range = this.editor.model.createRangeIn(docRoot);
@@ -80,6 +81,7 @@ class SmartfieldsRepository extends Plugin {
           }
       }
     }
+
     for (const [match, smartfield] of matchedSmartfields) {
       this.editor.model.change((writer) => {
         const itemStart = this.editor.model.createSelection(match, 'before');

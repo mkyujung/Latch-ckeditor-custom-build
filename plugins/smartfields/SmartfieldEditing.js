@@ -6,7 +6,6 @@ import {
   Widget
 } from '@ckeditor/ckeditor5-widget';
 
-import { getSmartfieldElementsInDocument } from '../../utils';
 import InsertSmartfieldCommand from './commands/InsertSmartfieldCommand';
 import Plugin from '@ckeditor/ckeditor5-core/src/plugin';
 
@@ -34,6 +33,11 @@ export default class SmartfieldEditing extends Plugin {
         viewElement.hasClass('smartfield')
       )
     );
+
+    this.editor.config.define('smartfieldProps', {
+      initialSmartfields: [],
+      onClick: undefined
+    });
 
     // Don't like this but it gets click handlers working
     this.onClickHandler = this.editor.config.get('smartfieldProps').onClick;
