@@ -3,6 +3,7 @@ import './SignatureBlock.css';
 import { ContextPlugin, Plugin } from '@ckeditor/ckeditor5-core';
 import { toWidget, toWidgetEditable } from '@ckeditor/ckeditor5-widget';
 
+import { InsertSignatureBlockCommand } from '../commands';
 import SmartfieldsRepository from '../../smartfields-repository/SmartfieldsRepository';
 
 export default class SignatureBlock extends Plugin {
@@ -15,7 +16,11 @@ export default class SignatureBlock extends Plugin {
     this._defineSchema();
 
     const { editor } = this;
-    const { t } = editor;
+
+    editor.commands.add(
+      InsertSignatureBlockCommand.eventId,
+      new InsertSignatureBlockCommand(editor)
+    );
   }
 
   _defineSchema(): void {

@@ -1,3 +1,4 @@
+import * as SignatureCommands from '../plugins/signature/commands';
 // export default CkModule;
 import * as SmartfieldsRepositoryCommands from '../plugins/smartfields-repository/commands';
 import * as utils from '../utils';
@@ -298,7 +299,8 @@ const CustomModule = {
   buildTime,
   ...utils,
   // Have to spread commands as part of module
-  ...SmartfieldsRepositoryCommands
+  ...SmartfieldsRepositoryCommands,
+  ...SignatureCommands
 };
 
 export default CustomModule;
