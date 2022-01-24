@@ -1,4 +1,7 @@
+import './SignatureBlock.css';
+
 import { ContextPlugin, Plugin } from '@ckeditor/ckeditor5-core';
+import { toWidget, toWidgetEditable } from '@ckeditor/ckeditor5-widget';
 
 import SmartfieldsRepository from '../../smartfields-repository/SmartfieldsRepository';
 
@@ -8,11 +11,11 @@ export default class SignatureBlock extends Plugin {
   }
 
   init(): void {
-    const { editor } = this;
-    const { t } = editor;
-
     this._defineConverters();
     this._defineSchema();
+
+    const { editor } = this;
+    const { t } = editor;
   }
 
   _defineSchema(): void {
@@ -34,48 +37,111 @@ export default class SignatureBlock extends Plugin {
     schema.register('signatureField', {
       isLimit: true,
       allowIn: 'signatureBlock',
-      allowContentOf: '$block'
+      allowChildren: ['$text']
     });
 
-    schema.register('signatureName', {
+    schema.register('signerName', {
       isLimit: true,
       allowIn: 'signatureBlock',
-      allowContentOf: '$block'
+      allowContentOf: '$block',
+      isBlock: true
     });
   }
 
   _defineConverters(): void {
     const { conversion } = this.editor;
 
-    conversion.elementToElement({
+    // Signature block
+    conversion.for('upcast').elementToElement({
       model: 'signatureBlock',
       view: {
-        name: 'div',
+        name: 'section',
         classes: 'signature-block'
       }
     });
-
-    conversion.elementToElement({
-      model: 'signingParty',
+    conversion.for('dataDowncast').elementToElement({
+      model: 'signatureBlock',
       view: {
-        name: 'div',
-        classes: 'signing-party'
+        name: 'section',
+        classes: 'signature-block'
+      }
+    });
+    conversion.for('editingDowncast').elementToElement({
+      model: 'signatureBlock',
+      view: (modelElement, { writer: viewWriter }) => {
+        const section = viewWriter.createContainerElement('section', {
+          class: 'signature-block'
+        });
+
+        return toWidget(section, viewWriter, {
+          label: 'Signature Block Widget'
+        });
       }
     });
 
+    // Signing party
+    conversion.for('upcast').elementToElement({
+      model: 'signingParty',
+      view: {
+        name: 'p',
+        classes: 'signing-party'
+      }
+    });
+    conversion.for('dataDowncast').elementToElement({
+      model: 'signingParty',
+      view: {
+        name: 'p',
+        classes: 'signing-party'
+      }
+    });
+    conversion.for('editingDowncast').elementToElement({
+      model: 'signingParty',
+      view: (modelElement, { writer: viewWriter }) => {
+        // Note: You use a more specialized createEditableElement() method here.
+        const p = viewWriter.createEditableElement('p', {
+          class: 'signing-party'
+        });
+
+        return toWidgetEditable(p, viewWriter);
+      }
+    });
+
+    // Signature field
     conversion.elementToElement({
       model: 'signatureField',
       view: {
-        name: 'div',
+        name: 'button',
         classes: 'signature-field'
       }
     });
 
-    conversion.elementToElement({
+    // Signer name
+    conversion.for('upcast').elementToElement({
       model: 'signerName',
       view: {
-        name: 'div',
+        name: 'p',
         classes: 'signer-name'
+      }
+    });
+    conversion.for('dataDowncast').elementToElement({
+      model: 'signerName',
+      view: {
+        name: 'p',
+        classes: 'signer-name'
+      }
+    });
+    conversion.for('editingDowncast').elementToElement({
+      model: 'signerName',
+      view: (modelElement, { writer: viewWriter }) => {
+        // Note: You use a more specialized createEditableElement() method here.
+        const p = viewWriter.createEditableElement('p', {
+          class: 'signer-name'
+        });
+
+        p.on('change', (...changes) =>
+          console.log('ALKDJALSDJALSDKJAJDALKDJALSDKJ', changes)
+        );
+        return toWidgetEditable(p, viewWriter);
       }
     });
   }

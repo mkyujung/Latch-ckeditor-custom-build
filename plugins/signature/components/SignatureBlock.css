@@ -1,0 +1,22 @@
+.signature-block.ck-widget {
+  border: 1px solid red;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.signature-block.ck-widget .signing-party {
+  border: 1px solid green;
+  display: block;
+}
+
+.signature-block.ck-widget .signature-field {
+  border-bottom: 1px solid black;
+  display: block;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.signature-block.ck-widget .signer-name {
+  border: 1px solid aquamarine;
+  display: block;
+}
