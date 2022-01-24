@@ -2,7 +2,7 @@ import { Command } from '@ckeditor/ckeditor5-core';
 import Writer from '@ckeditor/ckeditor5-engine/src/model/writer';
 
 type InsertSignatureBlockCommandParams = {
-  signingPartySmartfield: Record<string, string>;
+  signingPartySmartfield: Record<string, string>; // Must be a smartfield
   signerSmartfield: Record<string, string>;
 };
 
@@ -13,14 +13,14 @@ export default class InsertSignatureBlockCommand extends Command {
     console.log('IM EXECUTING');
 
     this.editor.model.change((writer) => {
-      const signatureBlock = createSimpleBox(writer, params);
+      const signatureBlock = createSignatureBlock(writer, params);
       this.editor.model.insertContent(signatureBlock);
       writer.setSelection(signatureBlock, 'on');
     });
   }
 }
 
-function createSimpleBox(
+function createSignatureBlock(
   writer: Writer,
   params: InsertSignatureBlockCommandParams
 ) {
