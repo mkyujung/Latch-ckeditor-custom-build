@@ -58,6 +58,7 @@ import Paragraph from '@ckeditor/ckeditor5-paragraph/src/paragraph';
 import PasteFromOffice from '@ckeditor/ckeditor5-paste-from-office/src/pastefromoffice';
 import Plugin from '@ckeditor/ckeditor5-core/src/plugin';
 import RemoveFormat from '@ckeditor/ckeditor5-remove-format/src/removeformat';
+import { SignaturePlugin } from '../plugins/signature';
 import { SmartfieldPlugin } from '../plugins/smartfields';
 import { SmartfieldsRepository } from '../plugins/smartfields-repository';
 import SpecialCharacters from '@ckeditor/ckeditor5-special-characters/src/specialcharacters';
@@ -86,39 +87,39 @@ import WordCount from '@ckeditor/ckeditor5-word-count/src/wordcount';
 
 class Context extends ContextBase {}
 // An example of a plugin that provides user data for an editor
-// that uses `Comments` and `RevisionHistory` plugins.
-export class UsersIntegration extends Plugin {
-  // Plugins to include in the context.
+// // that uses `Comments` and `RevisionHistory` plugins.
+// export class UsersIntegration extends Plugin {
+//   // Plugins to include in the context.
 
-  builtinPlugins = [NarrowSidebar, WideSidebar];
-  // Configuration shared between editors:
+//   builtinPlugins = [NarrowSidebar, WideSidebar];
+//   // Configuration shared between editors:
 
-  defaultConfig = {
-    // Configuration shared between editors:
-    language: 'en'
-  };
-  static get requires() {
-    return ['Comments'];
-  }
+//   defaultConfig = {
+//     // Configuration shared between editors:
+//     language: 'en'
+//   };
+//   static get requires() {
+//     return ['Comments'];
+//   }
 
-  init() {
-    const users = this.editor.plugins.get('Users');
+//   init() {
+//     const users = this.editor.plugins.get('Users');
 
-    // Provide user data from your database.
-    users.addUser({
-      id: 'u1',
-      name: 'Kate Smith'
-    });
+//     // Provide user data from your database.
+//     users.addUser({
+//       id: 'u1',
+//       name: 'Kate Smith'
+//     });
 
-    users.addUser({
-      id: 'u2',
-      name: 'Joe Doe'
-    });
+//     users.addUser({
+//       id: 'u2',
+//       name: 'Joe Doe'
+//     });
 
-    // Define the local user.
-    users.defineMe('u1');
-  }
-}
+//     // Define the local user.
+//     users.defineMe('u1');
+//   }
+// }
 
 class Editor extends DecoupledDocumentEditor {}
 
@@ -174,6 +175,7 @@ Editor.builtinPlugins = [
   Paragraph,
   PasteFromOffice,
   // Placeholder,
+  SignaturePlugin,
   SmartfieldPlugin,
   SmartfieldsRepository,
   RemoveFormat,
