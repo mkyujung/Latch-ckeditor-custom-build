@@ -2,34 +2,34 @@ import {
   ProductList,
   ProductPreview,
   ProductPreviewEditing
-} from './plugins/product'
+} from './plugins/product';
 
-import Bold from '@ckeditor/ckeditor5-basic-styles/src/bold'
+import Bold from '@ckeditor/ckeditor5-basic-styles/src/bold';
 // The official <CKEditor> component for React.
-import { CKEditor } from '@ckeditor/ckeditor5-react'
+import { CKEditor } from '@ckeditor/ckeditor5-react';
 // The official CKEditor 5 instance inspector. It helps understand the editor view and model.
-import CKEditorInspector from '@ckeditor/ckeditor5-inspector'
+import CKEditorInspector from '@ckeditor/ckeditor5-inspector';
 // The base editor class and features required to run the editor.
-import ClassicEditor from '@ckeditor/ckeditor5-editor-classic/src/classiceditor'
-import Essentials from '@ckeditor/ckeditor5-essentials/src/essentials'
-import Heading from '@ckeditor/ckeditor5-heading/src/heading'
-import Italic from '@ckeditor/ckeditor5-basic-styles/src/italic'
-import Link from '@ckeditor/ckeditor5-link/src/link'
-import Paragraph from '@ckeditor/ckeditor5-paragraph/src/paragraph'
-import React from 'react'
-import ReactDOM from 'react-dom'
-import Table from '@ckeditor/ckeditor5-table/src/table'
-import TableToolbar from '@ckeditor/ckeditor5-table/src/tabletoolbar'
-import Underline from '@ckeditor/ckeditor5-basic-styles/src/underline'
+import ClassicEditor from '@ckeditor/ckeditor5-editor-classic/src/classiceditor';
+import Essentials from '@ckeditor/ckeditor5-essentials/src/essentials';
+import Heading from '@ckeditor/ckeditor5-heading/src/heading';
+import Italic from '@ckeditor/ckeditor5-basic-styles/src/italic';
+import Link from '@ckeditor/ckeditor5-link/src/link';
+import Paragraph from '@ckeditor/ckeditor5-paragraph/src/paragraph';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import Table from '@ckeditor/ckeditor5-table/src/table';
+import TableToolbar from '@ckeditor/ckeditor5-table/src/tabletoolbar';
+import Underline from '@ckeditor/ckeditor5-basic-styles/src/underline';
 
 // The React application class. It renders the editor and the product list.
 class App extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
 
     // A place to store the reference to the editor instance created by the <CKEditor> component.
     // The editor instance is created asynchronously and is only available when the editor is ready.
-    this.editor = null
+    this.editor = null;
 
     this.state = {
       // The initial editor data. It is bound to the editor instance and will change as
@@ -70,7 +70,7 @@ class App extends React.Component {
                     </table>
                 </figure>
             `
-    }
+    };
 
     // The configuration of the <CKEditor> instance.
     this.editorConfig = {
@@ -111,15 +111,15 @@ class App extends React.Component {
         productRenderer: (id, domElement) => {
           const product = this.props.products.find(
             (product) => product.id === id
-          )
+          );
 
-          ReactDOM.render(<ProductPreview id={id} {...product} />, domElement)
+          ReactDOM.render(<ProductPreview id={id} {...product} />, domElement);
         }
       }
-    }
+    };
 
-    this.handleEditorDataChange = this.handleEditorDataChange.bind(this)
-    this.handleEditorReady = this.handleEditorReady.bind(this)
+    this.handleEditorDataChange = this.handleEditorDataChange.bind(this);
+    this.handleEditorReady = this.handleEditorReady.bind(this);
   }
 
   // A handler executed when the user types or modifies the editor content.
@@ -127,27 +127,27 @@ class App extends React.Component {
   handleEditorDataChange(evt, editor) {
     this.setState({
       editorData: editor.getData()
-    })
+    });
   }
 
   // A handler executed when the editor has been initialized and is ready.
   // It synchronizes the initial data state and saves the reference to the editor instance.
   handleEditorReady(editor) {
-    this.editor = editor
+    this.editor = editor;
 
     this.setState({
       editorData: editor.getData()
-    })
+    });
 
     // CKEditor 5 inspector allows you to take a peek into the editor's model and view
     // data layers. Use it to debug the application and learn more about the editor.
-    CKEditorInspector.attach(editor)
+    CKEditorInspector.attach(editor);
   }
 
   render() {
     return (
       <div>
-        <div className='app__offer-editor' key='offer-editor'>
+        <div className="app__offer-editor" key="offer-editor">
           <h3>Product offer editor</h3>
           <CKEditor
             editor={ClassicEditor}
@@ -161,15 +161,15 @@ class App extends React.Component {
         </div>
         ,
         <ProductList
-          key='product-list'
+          key="product-list"
           products={this.props.products}
           onClick={(id) => {
-            this.editor.execute('insertProduct', id)
-            this.editor.editing.view.focus()
+            this.editor.execute('insertProduct', id);
+            this.editor.editing.view.focus();
           }}
         />
       </div>
-    )
+    );
   }
 }
 
@@ -208,4 +208,4 @@ ReactDOM.render(
     ]}
   />,
   document.querySelector('.app')
-)
+);

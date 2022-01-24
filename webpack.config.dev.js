@@ -1,5 +1,5 @@
-const path = require('path')
-const { styles } = require('@ckeditor/ckeditor5-dev-utils')
+const path = require('path');
+const { styles } = require('@ckeditor/ckeditor5-dev-utils');
 
 module.exports = {
   entry: path.resolve(__dirname, 'app.jsx'),
@@ -8,7 +8,9 @@ module.exports = {
     path: path.resolve(__dirname, 'example'),
     filename: 'bundle.js'
   },
-
+  resolve: {
+    extensions: ['.ts', '.tsx', '.js', '.jsx', '.json']
+  },
   module: {
     rules: [
       {
@@ -16,12 +18,17 @@ module.exports = {
         use: ['raw-loader']
       },
       {
-        test: /\.jsx?$/,
+        test: /\.(t|j)s(x)?$/,
         exclude: /node_modules/,
-        loader: 'babel-loader',
-        query: {
-          presets: ['@babel/react']
-        }
+        use: [
+          {
+            loader: 'babel-loader',
+            query: {
+              presets: ['@babel/react', '@babel/preset-typescript'],
+              plugins: ['@babel/plugin-proposal-class-properties']
+            }
+          }
+        ]
       },
 
       {
@@ -74,4 +81,4 @@ module.exports = {
 
   // By default webpack logs warnings if the bundle is bigger than 200kb.
   performance: { hints: false }
-}
+};
