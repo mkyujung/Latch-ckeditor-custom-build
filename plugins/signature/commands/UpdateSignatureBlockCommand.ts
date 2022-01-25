@@ -6,6 +6,7 @@ type UpdateSignatureBlockCommandParams = {
   signingPartySmartfield: Record<string, string>; // Must be a smartfield
   signerSmartfield: Record<string, string>;
 };
+
 export default class UpdateSignatureBlockCommand extends Command {
   static eventId = 'update-signature-block';
 
@@ -24,9 +25,6 @@ export default class UpdateSignatureBlockCommand extends Command {
               value.item.getAttribute('blockId') === params.blockId
             ) {
               signatureBlocks.push(value.item);
-              // if (smartfield) {
-              //   signatureBlocks.push([value.item, smartfield]);
-              // }
             }
         }
       }

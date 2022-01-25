@@ -66,7 +66,14 @@ export default class SignatureBlock extends Plugin {
 
     // Signature block
     conversion.for('upcast').elementToElement({
-      model: 'signatureBlock',
+      // model: 'signatureBlock',
+      model: (viewElement, writer) => {
+        const modelWriter = writer.writer;
+
+        return modelWriter.createElement('signatureBlock', {
+          blockId: viewElement.getAttribute('blockid')
+        });
+      },
       view: {
         name: 'section',
         classes: 'signature-block'
@@ -74,16 +81,20 @@ export default class SignatureBlock extends Plugin {
     });
     conversion.for('dataDowncast').elementToElement({
       model: 'signatureBlock',
-      view: {
-        name: 'section',
-        classes: 'signature-block'
+      view: (modelItem, writer) => {
+        const viewWriter = writer.writer;
+        return viewWriter.createContainerElement('section', {
+          class: 'signature-block',
+          blockId: modelItem.getAttribute('blockId')
+        });
       }
     });
     conversion.for('editingDowncast').elementToElement({
       model: 'signatureBlock',
       view: (modelElement, { writer: viewWriter }) => {
         const section = viewWriter.createContainerElement('section', {
-          class: 'signature-block'
+          class: 'signature-block',
+          blockId: modelElement.getAttribute('blockId')
         });
 
         return toWidget(section, viewWriter, {
@@ -94,7 +105,13 @@ export default class SignatureBlock extends Plugin {
 
     // Signing party
     conversion.for('upcast').elementToElement({
-      model: 'signingParty',
+      model: (viewElement, writer) => {
+        const modelWriter = writer.writer;
+
+        return modelWriter.createElement('signingParty', {
+          smartfieldId: viewElement.getAttribute('smartfieldid')
+        });
+      },
       view: {
         name: 'p',
         classes: 'signing-party'
@@ -102,9 +119,12 @@ export default class SignatureBlock extends Plugin {
     });
     conversion.for('dataDowncast').elementToElement({
       model: 'signingParty',
-      view: {
-        name: 'p',
-        classes: 'signing-party'
+      view: (modelItem, writer) => {
+        const viewWriter = writer.writer;
+        return viewWriter.createContainerElement('p', {
+          class: 'signing-party',
+          smartfieldId: modelItem.getAttribute('smartfieldId')
+        });
       }
     });
     conversion.for('editingDowncast').elementToElement({
@@ -112,7 +132,8 @@ export default class SignatureBlock extends Plugin {
       view: (modelElement, { writer: viewWriter }) => {
         // Note: You use a more specialized createEditableElement() method here.
         const p = viewWriter.createEditableElement('p', {
-          class: 'signing-party'
+          class: 'signing-party',
+          smartfieldId: modelElement.getAttribute('smartfieldId')
         });
 
         return toWidgetEditable(p, viewWriter);
@@ -124,8 +145,7 @@ export default class SignatureBlock extends Plugin {
       model: 'signatureField',
       view: {
         name: 'button',
-        classes: 'signature-field',
-        onclick: () => alert('aiya')
+        classes: 'signature-field'
       }
     });
 
