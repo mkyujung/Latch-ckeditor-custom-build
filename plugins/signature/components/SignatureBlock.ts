@@ -5,6 +5,7 @@ import { toWidget, toWidgetEditable } from '@ckeditor/ckeditor5-widget';
 
 import { InsertSignatureBlockCommand } from '../commands';
 import SmartfieldsRepository from '../../smartfields-repository/SmartfieldsRepository';
+import UpdateSignatureBlockCommand from '../commands/UpdateSignatureBlockCommand';
 
 export default class SignatureBlock extends Plugin {
   static get requires(): Array<typeof Plugin | typeof ContextPlugin | string> {
@@ -20,6 +21,11 @@ export default class SignatureBlock extends Plugin {
     editor.commands.add(
       InsertSignatureBlockCommand.eventId,
       new InsertSignatureBlockCommand(editor)
+    );
+
+    editor.commands.add(
+      UpdateSignatureBlockCommand.eventId,
+      new UpdateSignatureBlockCommand(editor)
     );
   }
 
@@ -118,7 +124,8 @@ export default class SignatureBlock extends Plugin {
       model: 'signatureField',
       view: {
         name: 'button',
-        classes: 'signature-field'
+        classes: 'signature-field',
+        onclick: () => alert('aiya')
       }
     });
 
@@ -145,9 +152,6 @@ export default class SignatureBlock extends Plugin {
           class: 'signer-name'
         });
 
-        p.on('change', (...changes) =>
-          console.log('ALKDJALSDJALSDKJAJDALKDJALSDKJ', changes)
-        );
         return toWidgetEditable(p, viewWriter);
       }
     });

@@ -3,7 +3,7 @@ import {
   UpdateSmartfieldCommand
 } from './commands';
 
-import { isSmartfield } from '../../utils';
+import { isSmartfield } from './queries';
 import mix from '@ckeditor/ckeditor5-utils/src/mix';
 import ObservableMixin from '@ckeditor/ckeditor5-utils/src/observablemixin';
 import Plugin from '@ckeditor/ckeditor5-core/src/plugin';

@@ -1,7 +1,7 @@
 import * as SignatureCommands from '../plugins/signature/commands';
+import * as smartfieldQueries from '../plugins/smartfields-repository/queries';
 // export default CkModule;
 import * as SmartfieldsRepositoryCommands from '../plugins/smartfields-repository/commands';
-import * as utils from '../utils';
 
 /**
  * @license Copyright (c) 2014-2022, CKSource - Frederico Knabben. All rights reserved.
@@ -297,7 +297,7 @@ const CustomModule = {
   Context,
   packageVersion,
   buildTime,
-  ...utils,
+  ...smartfieldQueries,
   // Have to spread commands as part of module
   ...SmartfieldsRepositoryCommands,
   ...SignatureCommands
