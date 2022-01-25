@@ -39,8 +39,13 @@ function createSignatureBlock(
   const signerNameElement = writer.createElement('signerName', {
     smartfieldId: signingPartySmartfield.id
   });
+
   const signerNameText = writer.createText(
-    `${signerSmartfield.value || signerSmartfield.name}'s signature`
+    `${
+      signerSmartfield.value ||
+      signerSmartfield.defaultValue ||
+      signerSmartfield.title
+    }'s signature`
   );
   writer.append(signerNameText, signatureField);
   const signerSmartfieldElement = writer.createElement(
@@ -55,5 +60,6 @@ function createSignatureBlock(
   writer.append(signingPartySmartfieldElement, signingParty);
   writer.append(signerSmartfieldElement, signerNameElement);
 
+  writer.appendElement('paragraph', signatureBlock);
   return signatureBlock;
 }
