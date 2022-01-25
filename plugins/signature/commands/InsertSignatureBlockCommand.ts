@@ -2,6 +2,7 @@ import { Command } from '@ckeditor/ckeditor5-core';
 import Writer from '@ckeditor/ckeditor5-engine/src/model/writer';
 
 type InsertSignatureBlockCommandParams = {
+  blockId: string;
   signingPartySmartfield: Record<string, string>; // Must be a smartfield
   signerSmartfield: Record<string, string>;
 };
@@ -24,16 +25,20 @@ function createSignatureBlock(
   writer: Writer,
   params: InsertSignatureBlockCommandParams
 ) {
-  const { signingPartySmartfield, signerSmartfield } = params;
+  const { blockId, signingPartySmartfield, signerSmartfield } = params;
 
-  const signatureBlock = writer.createElement('signatureBlock');
-  const signingParty = writer.createElement('signingParty');
+  const signatureBlock = writer.createElement('signatureBlock', { blockId });
+  const signingParty = writer.createElement('signingParty', {
+    smartfieldId: signingPartySmartfield.id
+  });
   const signingPartySmartfieldElement = writer.createElement(
     'smartfield',
     signingPartySmartfield
   );
   const signatureField = writer.createElement('signatureField');
-  const signerNameElement = writer.createElement('signerName');
+  const signerNameElement = writer.createElement('signerName', {
+    smartfieldId: signingPartySmartfield.id
+  });
   const signerNameText = writer.createText(
     `${signerSmartfield.value || signerSmartfield.name}'s signature`
   );

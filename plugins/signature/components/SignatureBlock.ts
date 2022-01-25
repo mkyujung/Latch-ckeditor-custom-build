@@ -29,14 +29,15 @@ export default class SignatureBlock extends Plugin {
     schema.register('signatureBlock', {
       allowWhere: '$block',
       isObject: true,
-      allowAttributes: [],
-      allowContentOf: '$block'
+      allowContentOf: '$block',
+      allowAttributes: ['blockId']
     });
 
     schema.register('signingParty', {
       allowIn: 'signatureBlock',
       allowContentOf: '$block',
-      isLimit: true
+      isLimit: true,
+      allowAttributes: ['smartfieldId']
     });
 
     schema.register('signatureField', {
@@ -49,7 +50,8 @@ export default class SignatureBlock extends Plugin {
       isLimit: true,
       allowIn: 'signatureBlock',
       allowContentOf: '$block',
-      isBlock: true
+      isBlock: true,
+      allowAttributes: ['smartfieldId']
     });
   }
 
