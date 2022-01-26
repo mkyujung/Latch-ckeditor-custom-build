@@ -8,6 +8,11 @@
   padding: 4px 2px;
 }
 
+.smartfield.ck-widget:not([smartfield-value='']) {
+  background-color: rgb(205, 240, 192);
+  color: rgb(57, 71, 127);
+}
+
 .counterparty-smartfield.ck-widget {
   background: rgba(0, 0, 0, 0)
     repeating-linear-gradient(

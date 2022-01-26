@@ -130,13 +130,12 @@ export default class SignatureBlock extends Plugin {
     conversion.for('editingDowncast').elementToElement({
       model: 'signingParty',
       view: (modelElement, { writer: viewWriter }) => {
-        // Note: You use a more specialized createEditableElement() method here.
-        const p = viewWriter.createEditableElement('p', {
+        const p = viewWriter.createContainerElement('p', {
           class: 'signing-party',
           smartfieldId: modelElement.getAttribute('smartfieldId')
         });
 
-        return toWidgetEditable(p, viewWriter);
+        return p;
       }
     });
 
