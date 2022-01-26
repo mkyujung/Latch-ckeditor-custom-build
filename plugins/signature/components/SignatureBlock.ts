@@ -3,6 +3,7 @@ import './SignatureBlock.css';
 import { ContextPlugin, Plugin } from '@ckeditor/ckeditor5-core';
 import { toWidget, toWidgetEditable } from '@ckeditor/ckeditor5-widget';
 
+import { Element } from '@ckeditor/ckeditor5-engine';
 import { InsertSignatureBlockCommand } from '../commands';
 import SmartfieldsRepository from '../../smartfields-repository/SmartfieldsRepository';
 import UpdateSignatureBlockCommand from '../commands/UpdateSignatureBlockCommand';
@@ -140,13 +141,61 @@ export default class SignatureBlock extends Plugin {
     });
 
     // Signature field
-    conversion.elementToElement({
-      model: 'signatureField',
+    conversion.for('upcast').elementToElement({
+      model: (viewElement, writer) => {
+        const modelWriter = writer.writer;
+
+        return modelWriter.createElement('signatureField', {});
+      },
       view: {
         name: 'button',
         classes: 'signature-field'
       }
     });
+
+    conversion.for('dataDowncast').elementToElement({
+      model: 'signatureField',
+      view: (modelItem, writer) => {
+        const viewWriter = writer.writer;
+        const button = viewWriter.createContainerElement('button', {
+          class: 'signature-field'
+        });
+
+        return button;
+      }
+    });
+
+    conversion.for('editingDowncast').elementToElement({
+      model: 'signatureField',
+      view: (modelItem, writer) => {
+        const viewWriter = writer.writer;
+        const button = viewWriter.createContainerElement('button', {
+          class: 'signature-field'
+        });
+        const { smartfields } = this.editor.plugins.get(
+          'SmartfieldsRepository'
+        );
+
+        const smartfieldId =
+          modelItem.nextSibling.is('element') &&
+          modelItem.nextSibling.getAttribute('smartfieldId');
+
+        const signer = smartfields.find((s) => s.id === smartfieldId);
+
+        const buttonText = viewWriter.createText(
+          `${signer.value || signer.defaultValue || signer.title}'s signature`
+        );
+        viewWriter.insert(viewWriter.createPositionAt(button, 0), buttonText);
+        return button;
+      }
+    });
+    // conversion.elementToElement({
+    //   model: 'signatureField',
+    //   view: {
+    //     name: 'button',
+    //     classes: 'signature-field'
+    //   }
+    // });
 
     // Signer name
     conversion.for('upcast').elementToElement({

@@ -12,7 +12,7 @@ export function createSignatureBlock(
   const { blockId, signingPartySmartfield, signerSmartfield } = params;
 
   const signatureBlock = writer.createElement('signatureBlock', { blockId });
-  const signingParty = writer.createElement('signingParty', {
+  const signingPartyElement = writer.createElement('signingParty', {
     smartfieldId: signingPartySmartfield.id
   });
   const signingPartySmartfieldElement = writer.createElement(
@@ -24,24 +24,16 @@ export function createSignatureBlock(
     smartfieldId: signerSmartfield.id
   });
 
-  const signerNameText = writer.createText(
-    `${
-      signerSmartfield.value ||
-      signerSmartfield.defaultValue ||
-      signerSmartfield.title
-    }'s signature`
-  );
-  writer.append(signerNameText, signatureField);
   const signerSmartfieldElement = writer.createElement(
     'smartfield',
     signerSmartfield
   );
 
-  writer.append(signingParty, signatureBlock);
+  writer.append(signingPartyElement, signatureBlock);
   writer.append(signatureField, signatureBlock);
   writer.append(signerNameElement, signatureBlock);
 
-  writer.append(signingPartySmartfieldElement, signingParty);
+  writer.append(signingPartySmartfieldElement, signingPartyElement);
   writer.append(signerSmartfieldElement, signerNameElement);
 
   return signatureBlock;
