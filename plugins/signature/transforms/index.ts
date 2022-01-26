@@ -19,7 +19,9 @@ export function createSignatureBlock(
     'smartfield',
     signingPartySmartfield
   );
-  const signatureField = writer.createElement('signatureField');
+  const signatureField = writer.createElement('signatureField', {
+    signature: ''
+  });
   const signerNameElement = writer.createElement('signerName', {
     smartfieldId: signerSmartfield.id
   });
