@@ -151,7 +151,13 @@ export default class SignatureBlock extends Plugin {
 
     // Signer name
     conversion.for('upcast').elementToElement({
-      model: 'signerName',
+      model: (viewElement, writer) => {
+        const modelWriter = writer.writer;
+
+        return modelWriter.createElement('signerName', {
+          smartfieldId: viewElement.getAttribute('smartfieldid')
+        });
+      },
       view: {
         name: 'p',
         classes: 'signer-name'
@@ -159,9 +165,12 @@ export default class SignatureBlock extends Plugin {
     });
     conversion.for('dataDowncast').elementToElement({
       model: 'signerName',
-      view: {
-        name: 'p',
-        classes: 'signer-name'
+      view: (modelItem, writer) => {
+        const viewWriter = writer.writer;
+        return viewWriter.createContainerElement('p', {
+          class: 'signer-name',
+          smartfieldId: modelItem.getAttribute('smartfieldId')
+        });
       }
     });
     conversion.for('editingDowncast').elementToElement({
@@ -169,7 +178,8 @@ export default class SignatureBlock extends Plugin {
       view: (modelElement, { writer: viewWriter }) => {
         // Note: You use a more specialized createEditableElement() method here.
         const p = viewWriter.createEditableElement('p', {
-          class: 'signer-name'
+          class: 'signer-name',
+          smartfieldId: modelElement.getAttribute('smartfieldId')
         });
 
         return toWidgetEditable(p, viewWriter);
