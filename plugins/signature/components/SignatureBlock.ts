@@ -27,13 +27,6 @@ export default class SignatureBlock extends Plugin {
       new InsertSignatureBlockCommand(editor)
     );
 
-    this.editor.editing.mapper.on(
-      'viewToModelPosition',
-      viewToModelPositionOutsideModelElement(this.editor.model, (viewElement) =>
-        viewElement.hasClass('signatureBlock')
-      )
-    );
-
     editor.commands.add(
       UpdateSignatureBlockCommand.eventId,
       new UpdateSignatureBlockCommand(editor)
