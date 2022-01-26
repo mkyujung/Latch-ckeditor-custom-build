@@ -1,9 +1,12 @@
 import './SignatureBlock.css';
 
 import { ContextPlugin, Plugin } from '@ckeditor/ckeditor5-core';
-import { toWidget, toWidgetEditable } from '@ckeditor/ckeditor5-widget';
+import {
+  toWidget,
+  toWidgetEditable,
+  viewToModelPositionOutsideModelElement
+} from '@ckeditor/ckeditor5-widget';
 
-import { Element } from '@ckeditor/ckeditor5-engine';
 import { InsertSignatureBlockCommand } from '../commands';
 import SmartfieldsRepository from '../../smartfields-repository/SmartfieldsRepository';
 import UpdateSignatureBlockCommand from '../commands/UpdateSignatureBlockCommand';
@@ -22,6 +25,13 @@ export default class SignatureBlock extends Plugin {
     editor.commands.add(
       InsertSignatureBlockCommand.eventId,
       new InsertSignatureBlockCommand(editor)
+    );
+
+    this.editor.editing.mapper.on(
+      'viewToModelPosition',
+      viewToModelPositionOutsideModelElement(this.editor.model, (viewElement) =>
+        viewElement.hasClass('signatureBlock')
+      )
     );
 
     editor.commands.add(
@@ -50,6 +60,7 @@ export default class SignatureBlock extends Plugin {
     schema.register('signatureField', {
       isLimit: true,
       allowIn: 'signatureBlock',
+      allowAttributes: ['signature'],
       allowChildren: ['$text']
     });
 
@@ -145,7 +156,9 @@ export default class SignatureBlock extends Plugin {
       model: (viewElement, writer) => {
         const modelWriter = writer.writer;
 
-        return modelWriter.createElement('signatureField', {});
+        return modelWriter.createElement('signatureField', {
+          signature: viewElement.getAttribute('signature') || ''
+        });
       },
       view: {
         name: 'button',
@@ -158,7 +171,8 @@ export default class SignatureBlock extends Plugin {
       view: (modelItem, writer) => {
         const viewWriter = writer.writer;
         const button = viewWriter.createContainerElement('button', {
-          class: 'signature-field'
+          class: 'signature-field',
+          signature: modelItem.getAttribute('signature')
         });
 
         return button;
@@ -176,16 +190,25 @@ export default class SignatureBlock extends Plugin {
           'SmartfieldsRepository'
         );
 
-        const smartfieldId =
-          modelItem.nextSibling.is('element') &&
-          modelItem.nextSibling.getAttribute('smartfieldId');
+        // Signature image
+        const signatureUrl = modelItem.getAttribute('signature');
+        if (signatureUrl) {
+          const image = viewWriter.createRawElement('img', {
+            src: signatureUrl
+          });
+          viewWriter.insert(viewWriter.createPositionAt(button, 0), image);
+        } else {
+          const smartfieldId =
+            modelItem.nextSibling.is('element') &&
+            modelItem.nextSibling.getAttribute('smartfieldId');
 
-        const signer = smartfields.find((s) => s.id === smartfieldId);
+          const signer = smartfields.find((s) => s.id === smartfieldId);
 
-        const buttonText = viewWriter.createText(
-          `${signer.value || signer.defaultValue || signer.title}'s signature`
-        );
-        viewWriter.insert(viewWriter.createPositionAt(button, 0), buttonText);
+          const buttonText = viewWriter.createText(
+            `${signer.value || signer.defaultValue || signer.title}'s signature`
+          );
+          viewWriter.insert(viewWriter.createPositionAt(button, 0), buttonText);
+        }
         return button;
       }
     });
