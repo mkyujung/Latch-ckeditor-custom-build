@@ -1,11 +1,7 @@
 import './SignatureBlock.css';
 
 import { ContextPlugin, Plugin } from '@ckeditor/ckeditor5-core';
-import {
-  toWidget,
-  toWidgetEditable,
-  viewToModelPositionOutsideModelElement
-} from '@ckeditor/ckeditor5-widget';
+import { toWidget, toWidgetEditable } from '@ckeditor/ckeditor5-widget';
 
 import { InsertSignatureBlockCommand } from '../commands';
 import SmartfieldsRepository from '../../smartfields-repository/SmartfieldsRepository';
@@ -191,6 +187,7 @@ export default class SignatureBlock extends Plugin {
           });
           viewWriter.insert(viewWriter.createPositionAt(button, 0), image);
         } else {
+          // Synchronize with the smartfield element which sits below the signing field
           const smartfieldId =
             modelItem.nextSibling.is('element') &&
             modelItem.nextSibling.getAttribute('smartfieldId');
