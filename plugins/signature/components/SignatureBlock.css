@@ -9,17 +9,6 @@
   display: block;
 }
 
-.signature-block.ck-widget > .signature-field {
-  display: block;
-  margin-top: 1rem;
-  margin-bottom: 1rem;
-  padding: 1rem;
-  text-decoration: underline;
-  background-color: rgb(239, 241, 246);
-  border: 1px solid rgb(206, 212, 228);
-  border-radius: 0.25rem;
-}
-
 .signature-block.ck-widget > .signer-name {
   /* border: 1px solid aquamarine; */
   display: block;
