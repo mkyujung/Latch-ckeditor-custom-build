@@ -27,6 +27,10 @@ export default class SignatureBlock extends Plugin {
       UpdateSignatureBlockCommand.eventId,
       new UpdateSignatureBlockCommand(editor)
     );
+
+    this.editor.config.define('signatures', {
+      signatureRenderer: () => console.log('test render')
+    });
   }
 
   _defineSchema(): void {
@@ -49,8 +53,8 @@ export default class SignatureBlock extends Plugin {
     schema.register('signatureField', {
       isLimit: true,
       allowIn: 'signatureBlock',
-      allowAttributes: ['signature'],
-      allowChildren: ['$text']
+      allowAttributes: ['signature', 'blockId'],
+      allowChildren: ['$block']
     });
 
     schema.register('signerName', {
@@ -63,7 +67,8 @@ export default class SignatureBlock extends Plugin {
   }
 
   _defineConverters(): void {
-    const { conversion } = this.editor;
+    const { conversion, config } = this.editor;
+    const renderSignature = config.get('signatures').renderSignature;
 
     // Signature block
     conversion.for('upcast').elementToElement({
@@ -146,11 +151,12 @@ export default class SignatureBlock extends Plugin {
         const modelWriter = writer.writer;
 
         return modelWriter.createElement('signatureField', {
-          signature: viewElement.getAttribute('signature') || ''
+          signature: viewElement.getAttribute('signature') || '',
+          blockId: viewElement.getAttribute('block-id')
         });
       },
       view: {
-        name: 'button',
+        name: 'div',
         classes: 'signature-field'
       }
     });
@@ -159,12 +165,13 @@ export default class SignatureBlock extends Plugin {
       model: 'signatureField',
       view: (modelItem, writer) => {
         const viewWriter = writer.writer;
-        const button = viewWriter.createContainerElement('button', {
+        const div = viewWriter.createContainerElement('div', {
           class: 'signature-field',
-          signature: modelItem.getAttribute('signature')
+          signature: modelItem.getAttribute('signature'),
+          'block-id': modelItem.getAttribute('blockId')
         });
 
-        return button;
+        return div;
       }
     });
 
@@ -172,43 +179,30 @@ export default class SignatureBlock extends Plugin {
       model: 'signatureField',
       view: (modelItem, writer) => {
         const viewWriter = writer.writer;
-        const button = viewWriter.createContainerElement('button', {
-          class: 'signature-field'
+        const fieldWrapper = viewWriter.createContainerElement('div', {
+          class: 'signature-field',
+          signature: modelItem.getAttribute('signature'),
+          'block-id': modelItem.getAttribute('blockId')
         });
-        const { smartfields } = this.editor.plugins.get(
-          'SmartfieldsRepository'
+
+        const reactWrapper = viewWriter.createRawElement(
+          'div',
+          {},
+          function (domElement) {
+            renderSignature(modelItem.getAttribute('blockId'), domElement);
+          }
         );
 
-        // Signature image
-        const signatureUrl = modelItem.getAttribute('signature');
-        if (signatureUrl) {
-          const image = viewWriter.createRawElement('img', {
-            src: signatureUrl
-          });
-          viewWriter.insert(viewWriter.createPositionAt(button, 0), image);
-        } else {
-          // Synchronize with the smartfield element which sits below the signing field
-          const smartfieldId =
-            modelItem.nextSibling.is('element') &&
-            modelItem.nextSibling.getAttribute('smartfieldId');
+        viewWriter.insert(
+          viewWriter.createPositionAt(fieldWrapper, 0),
+          reactWrapper
+        );
 
-          const signer = smartfields.find((s) => s.id === smartfieldId);
-
-          const buttonText = viewWriter.createText(
-            `${signer.value || signer.defaultValue || signer.title}'s signature`
-          );
-          viewWriter.insert(viewWriter.createPositionAt(button, 0), buttonText);
-        }
-        return button;
+        return fieldWrapper;
+        // To make the signature field deletable and moveable, make it a widget
+        return toWidget(fieldWrapper, viewWriter);
       }
     });
-    // conversion.elementToElement({
-    //   model: 'signatureField',
-    //   view: {
-    //     name: 'button',
-    //     classes: 'signature-field'
-    //   }
-    // });
 
     // Signer name
     conversion.for('upcast').elementToElement({
