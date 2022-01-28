@@ -29,7 +29,7 @@ export default class SignatureBlock extends Plugin {
     );
 
     this.editor.config.define('signatures', {
-      signatureRenderer: () => console.log('test render')
+      renderSignature: () => console.log('test render')
     });
   }
 

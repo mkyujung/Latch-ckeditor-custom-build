@@ -62,6 +62,9 @@ class SmartfieldsRepository extends Plugin {
   }
 
   // This updates the backing CKeditor model with refreshed smartfields
+  // ** UPDATE ** this may not be necessary if we can force a re-render of the
+  // component from the event + move this over to a react component. Only need to
+  // reference the smartfield id and pull the values from the app, not ck
   _updateModel(smartfieldsList) {
     const docRoot = this.editor.model.document.getRoot();
     const range = this.editor.model.createRangeIn(docRoot);
