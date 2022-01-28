@@ -71,7 +71,7 @@ export default class SmartfieldEditing extends Plugin {
       editor.listenTo(viewDocument, 'click', (evt, data) => {
         const modelElement = editor.editing.mapper.toModelElement(data.target);
 
-        if (modelElement.name == 'smartfield') {
+        if (modelElement && modelElement.name == 'smartfield') {
           onClickHandler(modelElement.getAttribute('id'));
         }
       });
