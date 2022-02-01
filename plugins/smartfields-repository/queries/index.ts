@@ -1,13 +1,13 @@
+import { Editor } from '@ckeditor/ckeditor5-core';
 import { EditorWithUI } from '@ckeditor/ckeditor5-core/src/editor/editorwithui';
 import { Element } from '@ckeditor/ckeditor5-engine';
-import { Editor as smartfieldQueries } from '@ckeditor/ckeditor5-core';
 
 export const isSmartfield = (element: Element): boolean => {
   return element.name === 'smartfield';
 };
 
 export function* getSmartfieldIdsInDocument(
-  editor: smartfieldQueries | EditorWithUI
+  editor: Editor | EditorWithUI
 ): Generator<string> {
   const docRoot = editor.model.document.getRoot();
   const range = editor.model.createRangeIn(docRoot);
@@ -24,7 +24,7 @@ export function* getSmartfieldIdsInDocument(
 }
 
 export function* getSmartfieldElementsInDocument(
-  editor: smartfieldQueries | EditorWithUI
+  editor: Editor | EditorWithUI
 ): Generator<Element> {
   const docRoot = editor.model.document.getRoot();
   const range = editor.model.createRangeIn(docRoot);

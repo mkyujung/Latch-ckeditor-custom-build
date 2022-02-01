@@ -1,4 +1,5 @@
 import * as SignatureCommands from '../plugins/signature/commands';
+import * as SignatureModule from '../plugins/signature';
 import * as smartfieldQueries from '../plugins/smartfields-repository/queries';
 // export default CkModule;
 import * as SmartfieldsRepositoryCommands from '../plugins/smartfields-repository/commands';
@@ -19,7 +20,6 @@ import CloudServices from '@ckeditor/ckeditor5-cloud-services/src/cloudservices'
 import Code from '@ckeditor/ckeditor5-basic-styles/src/code';
 import CodeBlock from '@ckeditor/ckeditor5-code-block/src/codeblock';
 import ContextBase from '@ckeditor/ckeditor5-core/src/context';
-import ContextWatchdog from '@ckeditor/ckeditor5-watchdog/src/contextwatchdog';
 import DataFilter from '@ckeditor/ckeditor5-html-support/src/datafilter';
 import DataSchema from '@ckeditor/ckeditor5-html-support/src/dataschema';
 import DecoupledDocumentEditor from '@ckeditor/ckeditor5-editor-decoupled/src/decouplededitor';
@@ -59,7 +59,6 @@ import Paragraph from '@ckeditor/ckeditor5-paragraph/src/paragraph';
 import PasteFromOffice from '@ckeditor/ckeditor5-paste-from-office/src/pastefromoffice';
 import Plugin from '@ckeditor/ckeditor5-core/src/plugin';
 import RemoveFormat from '@ckeditor/ckeditor5-remove-format/src/removeformat';
-import { SignaturePlugin } from '../plugins/signature';
 import { SmartfieldPlugin } from '../plugins/smartfields';
 import { SmartfieldsRepository } from '../plugins/smartfields-repository';
 import SpecialCharacters from '@ckeditor/ckeditor5-special-characters/src/specialcharacters';
@@ -176,7 +175,7 @@ Editor.builtinPlugins = [
   Paragraph,
   PasteFromOffice,
   // Placeholder,
-  SignaturePlugin,
+  SignatureModule.SignaturePlugin,
   SmartfieldPlugin,
   SmartfieldsRepository,
   RemoveFormat,
@@ -297,6 +296,7 @@ const CustomModule = {
   Context,
   packageVersion,
   buildTime,
+  ...SignatureModule,
   ...smartfieldQueries,
   // Have to spread commands as part of module
   ...SmartfieldsRepositoryCommands,
