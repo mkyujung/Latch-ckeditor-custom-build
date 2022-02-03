@@ -1,17 +1,17 @@
 import * as SignatureCommands from '../plugins/signature/commands';
 import * as SignatureModule from '../plugins/signature';
-import * as smartfieldQueries from '../plugins/smartfields-repository/queries';
 // export default CkModule;
 import * as SmartfieldsRepositoryCommands from '../plugins/smartfields-repository/commands';
+import * as smartfieldQueries from '../plugins/smartfields-repository/queries';
 
 /**
  * @license Copyright (c) 2014-2022, CKSource - Frederico Knabben. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
 import Alignment from '@ckeditor/ckeditor5-alignment/src/alignment';
-import Autoformat from '@ckeditor/ckeditor5-autoformat/src/autoformat';
 import AutoImage from '@ckeditor/ckeditor5-image/src/autoimage';
 import AutoLink from '@ckeditor/ckeditor5-link/src/autolink';
+import Autoformat from '@ckeditor/ckeditor5-autoformat/src/autoformat';
 import Autosave from '@ckeditor/ckeditor5-autosave/src/autosave';
 import Base64UploadAdapter from '@ckeditor/ckeditor5-upload/src/adapters/base64uploadadapter';
 import BlockQuote from '@ckeditor/ckeditor5-block-quote/src/blockquote';
@@ -59,6 +59,7 @@ import Paragraph from '@ckeditor/ckeditor5-paragraph/src/paragraph';
 import PasteFromOffice from '@ckeditor/ckeditor5-paste-from-office/src/pastefromoffice';
 import Plugin from '@ckeditor/ckeditor5-core/src/plugin';
 import RemoveFormat from '@ckeditor/ckeditor5-remove-format/src/removeformat';
+import SignaturePlugin from '../plugins/signature/SignaturePlugin';
 import { SmartfieldPlugin } from '../plugins/smartfields';
 import { SmartfieldsRepository } from '../plugins/smartfields-repository';
 import SpecialCharacters from '@ckeditor/ckeditor5-special-characters/src/specialcharacters';
@@ -175,7 +176,7 @@ Editor.builtinPlugins = [
   Paragraph,
   PasteFromOffice,
   // Placeholder,
-  SignatureModule.SignaturePlugin,
+  SignaturePlugin,
   SmartfieldPlugin,
   SmartfieldsRepository,
   RemoveFormat,
