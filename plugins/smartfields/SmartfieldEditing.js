@@ -55,11 +55,11 @@ export default class SmartfieldEditing extends Plugin {
       const disabled = args[1];
 
       const viewDocument = this.editor.editing.view.document;
-      if (disabled) {
-        this.editor.stopListening(viewDocument, 'click');
-      } else {
-        this._enableClickToEdit(this.editor, this.onClickHandler);
-      }
+      // if (disabled) {
+      //   this.editor.stopListening(viewDocument, 'click');
+      // } else {
+      this._enableClickToEdit(this.editor, this.onClickHandler);
+      // }
     });
   }
 
@@ -77,12 +77,14 @@ export default class SmartfieldEditing extends Plugin {
         if (modelElement && modelElement.name == 'smartfield') {
           if (
             !this.allowedSmartfieldIds ||
+            !this.disableClick ||
             (this.allowedSmartfieldIds &&
               this.allowedSmartfieldIds.includes(
                 modelElement.getAttribute('id')
               ))
-          )
+          ) {
             onClickHandler(modelElement.getAttribute('id'));
+          }
         }
       });
 
@@ -113,7 +115,7 @@ export default class SmartfieldEditing extends Plugin {
 
   _defineConverters() {
     const { conversion } = this.editor;
-    const { renderSmartfield } = this.editor.config.get('smartfieldProps');
+    const { allowedSmartfieldIds } = this.editor.config.get('smartfieldProps');
 
     // UI to Model
     conversion.for('upcast').elementToElement({
@@ -146,28 +148,55 @@ export default class SmartfieldEditing extends Plugin {
       }
     });
 
+    conversion.for('upcast').elementToElement({
+      view: {
+        name: 'button',
+        classes: ['signer-smartfield']
+      },
+      model: (viewElement, writer) => {
+        const modelWriter = writer.writer;
+
+        return modelWriter.createElement(
+          'smartfield',
+          _constructViewToModelAttributes(viewElement.getAttributes())
+        );
+      }
+    });
+
     // Model to HTML View
     conversion.for('editingDowncast').elementToElement({
       model: 'smartfield',
       view: (modelItem, writer) => {
         const viewWriter = writer.writer;
-        const widgetElement = _createSmartfieldView(modelItem, viewWriter);
+        const widgetElement = _createSmartfieldView(
+          modelItem,
+          viewWriter,
+          allowedSmartfieldIds
+        );
         return toWidget(widgetElement, viewWriter);
       }
     });
 
-    // Model to HTML View
+    // Model to Data View
     conversion.for('dataDowncast').elementToElement({
       model: 'smartfield',
       view: (modelItem, writer) => {
         const viewWriter = writer.writer;
-        const result = _createSmartfieldView(modelItem, viewWriter);
+        const result = _createSmartfieldView(
+          modelItem,
+          viewWriter,
+          allowedSmartfieldIds
+        );
 
         return result;
       }
     });
 
-    function _createSmartfieldView(modelItem, viewWriter) {
+    function _createSmartfieldView(
+      modelItem,
+      viewWriter,
+      allowedSmartfieldIds = []
+    ) {
       const viewAttributes = _constructViewAttributesObject(
         modelItem.getAttributes()
       );
@@ -177,9 +206,11 @@ export default class SmartfieldEditing extends Plugin {
 
       const smartfieldViewButton = viewWriter.createContainerElement('button', {
         class:
-          counterPartyToProvide === 'true'
-            ? 'counterparty-smartfield'
-            : 'smartfield',
+          (counterPartyToProvide === 'true' &&
+            (allowedSmartfieldIds.includes(modelItem.getAttribute('id'))
+              ? 'signer-smartfield'
+              : 'counterparty-smartfield')) ||
+          'smartfield',
         ...viewAttributes
       });
 
