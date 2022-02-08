@@ -1,0 +1,35 @@
+/* .smartfield.ck-widget {
+  background-color: #82bf69;
+  border-radius: 4px;
+  color: white;
+  line-height: 1em;
+  margin: 0 1px;
+  outline-offset: -2px;
+  padding: 4px 2px;
+}
+
+.smartfield.ck-widget:not([smartfield-value='']) {
+  background-color: rgb(205, 240, 192);
+  color: rgb(57, 71, 127);
+}
+
+.counterparty-smartfield.ck-widget {
+  background: rgba(0, 0, 0, 0)
+    repeating-linear-gradient(
+      45deg,
+      rgb(161, 236, 131),
+      rgb(161, 236, 131) 10px,
+      rgb(150, 211, 125) 10px,
+      rgb(150, 211, 125) 20px
+    )
+    repeat scroll 0% 0%;
+  border-radius: 4px;
+}
+
+.ck.ck-read-only [class*='smartfield'].ck-widget {
+  background: none;
+  color: inherit;
+  cursor: revert;
+  margin: 0;
+  padding: 0;
+} */
