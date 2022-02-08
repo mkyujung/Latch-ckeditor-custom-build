@@ -267,6 +267,36 @@ Editor.defaultConfig = {
       'linkImage'
     ]
   },
+  heading: {
+    options: [
+      { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
+      {
+        model: 'heading1',
+        view: { name: 'p', classes: 'ck-heading1' },
+        title: 'Heading 1',
+        class: 'ck-heading1'
+      },
+      {
+        model: 'heading2',
+        view: { name: 'p', classes: 'ck-heading2' },
+        title: 'Heading 2',
+        class: 'ck-heading2'
+      },
+      {
+        model: 'heading3',
+        view: { name: 'p', classes: 'ck-heading3' },
+        title: 'Heading 3',
+        class: 'ck-heading3'
+      },
+      {
+        model: 'heading4',
+        view: { name: 'p', classes: 'ck-heading4' },
+        title: 'Heading 4',
+        class: 'ck-heading4'
+      },
+
+    ]
+  },
   table: {
     contentToolbar: [
       'tableColumn',
