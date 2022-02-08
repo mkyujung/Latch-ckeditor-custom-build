@@ -37,9 +37,11 @@ export default class SmartfieldEditing extends Plugin {
     this.editor.config.define('smartfieldProps', {
       initialSmartfields: [],
       onClick: undefined,
-      renderSmartfield: () => 'Failed to load plugin'
+      allowedSmartfieldIds: undefined
     });
 
+    this.allowedSmartfieldIds =
+      this.editor.config.get('smartfieldProps').allowedSmartfieldIds;
     // Don't like this but it gets click handlers working
     this.onClickHandler = this.editor.config.get('smartfieldProps').onClick;
     this.clickObserver = this._enableClickToEdit(
@@ -73,7 +75,14 @@ export default class SmartfieldEditing extends Plugin {
         const modelElement = editor.editing.mapper.toModelElement(data.target);
 
         if (modelElement && modelElement.name == 'smartfield') {
-          onClickHandler(modelElement.getAttribute('id'));
+          if (
+            !this.allowedSmartfieldIds ||
+            (this.allowedSmartfieldIds &&
+              this.allowedSmartfieldIds.includes(
+                modelElement.getAttribute('id')
+              ))
+          )
+            onClickHandler(modelElement.getAttribute('id'));
         }
       });
 
@@ -142,26 +151,8 @@ export default class SmartfieldEditing extends Plugin {
       model: 'smartfield',
       view: (modelItem, writer) => {
         const viewWriter = writer.writer;
-        // const widgetElement = _createSmartfieldView(modelItem, viewWriter);
-
-        const smartfieldWrapper = viewWriter.createContainerElement('div', {
-          class: 'smartfield',
-          'smartfield-id': modelItem.getAttribute('id')
-        });
-
-        const reactWrapper = viewWriter.createRawElement(
-          'div',
-          {},
-          function (domElement) {
-            renderSmartfield(domElement, modelItem.getAttribute('id'));
-          }
-        );
-
-        viewWriter.insert(
-          viewWriter.createPositionAt(smartfieldWrapper, 0),
-          reactWrapper
-        );
-        return toWidget(smartfieldWrapper, viewWriter);
+        const widgetElement = _createSmartfieldView(modelItem, viewWriter);
+        return toWidget(widgetElement, viewWriter);
       }
     });
 
