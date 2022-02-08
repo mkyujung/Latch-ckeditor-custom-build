@@ -38,3 +38,24 @@ export function* getSmartfieldElementsInDocument(
     }
   }
 }
+
+export function* getSmartfieldsById(
+  editor: Editor | EditorWithUI,
+  ids: string[]
+): Generator<Element> {
+  const docRoot = editor.model.document.getRoot();
+  const range = editor.model.createRangeIn(docRoot);
+
+  for (const value of range.getWalker()) {
+    switch (value.type) {
+      case 'elementStart':
+        if (
+          isSmartfield(value.item) &&
+          ids.includes(value.item.getAttribute('id'))
+        ) {
+          yield value.item;
+        }
+        break;
+    }
+  }
+}
