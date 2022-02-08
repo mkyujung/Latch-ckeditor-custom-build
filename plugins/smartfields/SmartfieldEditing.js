@@ -36,7 +36,8 @@ export default class SmartfieldEditing extends Plugin {
 
     this.editor.config.define('smartfieldProps', {
       initialSmartfields: [],
-      onClick: undefined
+      onClick: undefined,
+      renderSmartfield: () => 'Failed to load plugin'
     });
 
     // Don't like this but it gets click handlers working
@@ -103,6 +104,7 @@ export default class SmartfieldEditing extends Plugin {
 
   _defineConverters() {
     const { conversion } = this.editor;
+    const { renderSmartfield } = this.editor.config.get('smartfieldProps');
 
     // UI to Model
     conversion.for('upcast').elementToElement({
@@ -140,8 +142,26 @@ export default class SmartfieldEditing extends Plugin {
       model: 'smartfield',
       view: (modelItem, writer) => {
         const viewWriter = writer.writer;
-        const widgetElement = _createSmartfieldView(modelItem, viewWriter);
-        return toWidget(widgetElement, viewWriter);
+        // const widgetElement = _createSmartfieldView(modelItem, viewWriter);
+
+        const smartfieldWrapper = viewWriter.createContainerElement('div', {
+          class: 'smartfield',
+          'smartfield-id': modelItem.getAttribute('id')
+        });
+
+        const reactWrapper = viewWriter.createRawElement(
+          'div',
+          {},
+          function (domElement) {
+            renderSmartfield(domElement, modelItem.getAttribute('id'));
+          }
+        );
+
+        viewWriter.insert(
+          viewWriter.createPositionAt(smartfieldWrapper, 0),
+          reactWrapper
+        );
+        return toWidget(smartfieldWrapper, viewWriter);
       }
     });
 
