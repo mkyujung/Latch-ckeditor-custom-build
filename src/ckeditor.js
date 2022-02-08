@@ -209,52 +209,58 @@ Editor.defaultConfig = {
   toolbar: {
     items: [
       'smartfield',
-      'heading',
+
+      'undo',
+      'redo',
       '|',
+      'heading',
       'fontFamily',
       'fontSize',
-      '|',
+      // '|',
+      // 'exportPdf',
+      // 'exportWord',
+
+      // '|',
       'fontColor',
       'fontBackgroundColor',
-      '|',
       'bold',
       'italic',
       'underline',
-      'strikethrough',
+      // 'strikethrough',
+      'highlight',
       '|',
-      'alignment',
-      '|',
-      'numberedList',
       'bulletedList',
-      '|',
+      'numberedList',
       'outdent',
       'indent',
-      '|',
-      'todoList',
+      'alignment',
+      // '|',
+      // 'todoList',
       'link',
-      'blockQuote',
+      // 'blockQuote',
       'imageUpload',
       'insertTable',
-      'mediaEmbed',
+      // 'mediaEmbed',
       '|',
-      'undo',
-      'redo',
+
       // 'comment',
-      'exportPdf',
-      'exportWord',
       'findAndReplace',
-      'highlight',
+
       'horizontalLine',
-      'imageInsert',
-      'pageNavigation',
+      // 'imageInsert',
+
       'pageBreak',
       'removeFormat',
-      'specialCharacters',
-      'restrictedEditingException',
+      // 'specialCharacters',
+      // 'restrictedEditingException',
       'subscript',
-      'superscript'
+      'superscript',
+      '|',
+      'pageNavigation'
+
       // 'placeholder',
-    ]
+    ],
+    shouldNotGroupWhenFull: true
   },
   language: 'en',
   image: {
@@ -293,8 +299,7 @@ Editor.defaultConfig = {
         view: { name: 'p', classes: 'ck-heading4' },
         title: 'Heading 4',
         class: 'ck-heading4'
-      },
-
+      }
     ]
   },
   table: {
