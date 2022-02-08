@@ -41,8 +41,11 @@ export function* getSmartfieldElementsInDocument(
 
 export function* getSmartfieldsById(
   editor: Editor | EditorWithUI,
-  ids: string[]
+  ids: string[] | undefined
 ): Generator<Element> {
+  if (!ids) {
+    yield;
+  }
   const docRoot = editor.model.document.getRoot();
   const range = editor.model.createRangeIn(docRoot);
 
