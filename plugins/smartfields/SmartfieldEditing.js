@@ -68,7 +68,6 @@ export default class SmartfieldEditing extends Plugin {
     this.onClickHandler = editor.config.get('smartfieldProps').onClick;
 
     if (typeof onClickHandler === 'function') {
-      // const observer = editor.editing.view.addObserver(ClickObserver);
       const viewDocument = editor.editing.view.document;
 
       editor.listenTo(viewDocument, 'click', (evt, data) => {
@@ -76,8 +75,7 @@ export default class SmartfieldEditing extends Plugin {
 
         if (modelElement && modelElement.name == 'smartfield') {
           if (
-            !this.allowedSmartfieldIds ||
-            !this.disableClick ||
+            (!this.allowedSmartfieldIds && !this.disableClick) ||
             (this.allowedSmartfieldIds &&
               this.allowedSmartfieldIds.includes(
                 modelElement.getAttribute('id')
