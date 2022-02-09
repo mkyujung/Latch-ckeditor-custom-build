@@ -73,6 +73,9 @@ export default class SmartfieldEditing extends Plugin {
       editor.listenTo(viewDocument, 'click', (evt, data) => {
         const modelElement = editor.editing.mapper.toModelElement(data.target);
 
+        const smartfields = this.editor.plugins.get(
+          'SmartfieldsRepository'
+        ).smartfields;
         if (modelElement && modelElement.name == 'smartfield') {
           if (
             (!this.allowedSmartfieldIds && !this.disableClick) ||
@@ -81,7 +84,11 @@ export default class SmartfieldEditing extends Plugin {
                 modelElement.getAttribute('id')
               ))
           ) {
-            onClickHandler(modelElement.getAttribute('id'));
+            const repoSmartfield = smartfields.find(
+              (f) => f.id === modelElement.getAttribute('id')
+            );
+
+            onClickHandler(repoSmartfield);
           }
         }
       });
