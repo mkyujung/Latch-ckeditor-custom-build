@@ -101,10 +101,9 @@ export default class SmartfieldEditing extends Plugin {
         // Recheck this list to match smartfield properties
         // Best if it's short and has referential synchronisity with
         // document metadata smartfields array
-        'counterPartyToProvide',
+        'counterpartytoprovide',
         'id',
-        'showCounterPartyToProvideCheckbox',
-        'signatureVariable',
+        'signaturevariable', // Doesn't do anything in ck editor
         'title',
         'value'
       ]
@@ -198,13 +197,19 @@ export default class SmartfieldEditing extends Plugin {
       const viewAttributes = _constructViewAttributesObject(
         modelItem.getAttributes()
       );
+
       const counterPartyToProvide = modelItem.getAttribute(
         'counterpartytoprovide'
+      );
+      console.log(
+        '🚀 ~ file: SmartfieldEditing.js ~ line 202 ~ SmartfieldEditing ~ _defineConverters ~ modelItem',
+        modelItem
       );
 
       const smartfieldViewButton = viewWriter.createContainerElement('button', {
         class:
-          (counterPartyToProvide === 'true' &&
+          (counterPartyToProvide &&
+            counterPartyToProvide.toString() === 'true' &&
             (allowedSmartfieldIds.includes(modelItem.getAttribute('id'))
               ? 'signer-smartfield'
               : 'counterparty-smartfield')) ||
@@ -230,7 +235,8 @@ export default class SmartfieldEditing extends Plugin {
 
       for (const a of attributesGenerator) {
         // Don't map the class attribute
-        if (a[0] !== 'class') attributesObject[`smartfield-${a[0]}`] = a[1];
+        if (a[0] !== 'class')
+          attributesObject[`smartfield-${a[0].toLowerCase()}`] = a[1];
       }
 
       return attributesObject;

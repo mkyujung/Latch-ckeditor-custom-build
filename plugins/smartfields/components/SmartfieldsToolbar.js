@@ -9,6 +9,7 @@ import {
 
 import { Collection } from '@ckeditor/ckeditor5-utils';
 import InsertSmartfieldCommand from '../commands/InsertSmartfieldCommand';
+import { keyBy } from 'lodash';
 import Plugin from '@ckeditor/ckeditor5-core/src/plugin';
 import SmartfieldsRepository from '../../smartfields-repository/SmartfieldsRepository';
 
@@ -50,6 +51,10 @@ export default class SmartfielsToolbar extends Plugin {
       this.dropdownRef.bind('isEnabled').to(command, 'isEnabled');
 
       this.listenTo(this.dropdownRef, 'execute', (evt) => {
+        console.log(
+          '🚀 ~ file: SmartfieldsToolbar.js ~ line 53 ~ SmartfielsToolbar ~ this.listenTo ~ evt',
+          evt.source.commandParam
+        );
         editor.execute(
           InsertSmartfieldCommand.eventId,
           evt.source.commandParam
@@ -84,7 +89,10 @@ function getDropdownItemsDefinitions(smartfields) {
     smartfields.map((s) => ({
       type: 'button',
       model: new Model({
-        commandParam: s,
+        commandParam: Object.entries(s).reduce((a, [key, value]) => {
+          a[key.toLowerCase()] = value;
+          return a;
+        }, {}),
         label: s.title,
         withText: true
       })

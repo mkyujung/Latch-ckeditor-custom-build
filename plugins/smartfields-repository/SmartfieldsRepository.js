@@ -57,6 +57,10 @@ class SmartfieldsRepository extends Plugin {
   }
 
   _handleRefreshSmartfieldList(event, params) {
+    console.log(
+      '🚀 ~ file: SmartfieldsRepository.js ~ line 60 ~ SmartfieldsRepository ~ _handleRefreshSmartfieldList ~ params',
+      params
+    );
     this.set('smartfields', [...params]);
     this._updateModel(params);
   }
@@ -92,7 +96,13 @@ class SmartfieldsRepository extends Plugin {
 
         this.editor.model.deleteContent(itemSelection);
         this.editor.model.insertContent(
-          writer.createElement('smartfield', smartfield),
+          writer.createElement(
+            'smartfield',
+            Object.entries(smartfield).reduce((a, [key, value]) => {
+              a[key.toLowerCase()] = value;
+              return a;
+            }, {})
+          ),
           itemStart,
           'after'
         );
