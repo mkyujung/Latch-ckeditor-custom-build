@@ -1,17 +1,17 @@
 import * as SignatureCommands from '../plugins/signature/commands';
 import * as SignatureModule from '../plugins/signature';
+import * as smartfieldQueries from '../plugins/smartfields-repository/queries';
 // export default CkModule;
 import * as SmartfieldsRepositoryCommands from '../plugins/smartfields-repository/commands';
-import * as smartfieldQueries from '../plugins/smartfields-repository/queries';
 
 /**
  * @license Copyright (c) 2014-2022, CKSource - Frederico Knabben. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
 import Alignment from '@ckeditor/ckeditor5-alignment/src/alignment';
+import Autoformat from '@ckeditor/ckeditor5-autoformat/src/autoformat';
 import AutoImage from '@ckeditor/ckeditor5-image/src/autoimage';
 import AutoLink from '@ckeditor/ckeditor5-link/src/autolink';
-import Autoformat from '@ckeditor/ckeditor5-autoformat/src/autoformat';
 import Autosave from '@ckeditor/ckeditor5-autosave/src/autosave';
 import Base64UploadAdapter from '@ckeditor/ckeditor5-upload/src/adapters/base64uploadadapter';
 import BlockQuote from '@ckeditor/ckeditor5-block-quote/src/blockquote';
@@ -49,8 +49,8 @@ import Italic from '@ckeditor/ckeditor5-basic-styles/src/italic';
 import Link from '@ckeditor/ckeditor5-link/src/link';
 import LinkImage from '@ckeditor/ckeditor5-link/src/linkimage';
 import ListStyle from '@ckeditor/ckeditor5-list/src/liststyle';
-import MediaEmbed from '@ckeditor/ckeditor5-media-embed/src/mediaembed';
-import MediaEmbedToolbar from '@ckeditor/ckeditor5-media-embed/src/mediaembedtoolbar';
+// import MediaEmbed from '@ckeditor/ckeditor5-media-embed/src/mediaembed';
+// import MediaEmbedToolbar from '@ckeditor/ckeditor5-media-embed/src/mediaembedtoolbar';
 import Mention from '@ckeditor/ckeditor5-mention/src/mention';
 import NarrowSidebar from '@ckeditor/ckeditor5-comments/src/annotations/narrowsidebar';
 import PageBreak from '@ckeditor/ckeditor5-page-break/src/pagebreak';
@@ -168,8 +168,8 @@ Editor.builtinPlugins = [
   // List,
   ListStyle,
   // Markdown,
-  MediaEmbed,
-  MediaEmbedToolbar,
+  // MediaEmbed,
+  // MediaEmbedToolbar,
   Mention,
   PageBreak,
   Pagination,
@@ -209,52 +209,58 @@ Editor.defaultConfig = {
   toolbar: {
     items: [
       'smartfield',
-      'heading',
+
+      'undo',
+      'redo',
       '|',
+      'heading',
       'fontFamily',
       'fontSize',
-      '|',
+      // '|',
+      // 'exportPdf',
+      // 'exportWord',
+
+      // '|',
       'fontColor',
       'fontBackgroundColor',
-      '|',
       'bold',
       'italic',
       'underline',
-      'strikethrough',
+      // 'strikethrough',
+      'highlight',
       '|',
-      'alignment',
-      '|',
-      'numberedList',
       'bulletedList',
-      '|',
+      'numberedList',
       'outdent',
       'indent',
-      '|',
-      'todoList',
+      'alignment',
+      // '|',
+      // 'todoList',
       'link',
-      'blockQuote',
+      // 'blockQuote',
       'imageUpload',
       'insertTable',
-      'mediaEmbed',
+      // 'mediaEmbed',
       '|',
-      'undo',
-      'redo',
+
       // 'comment',
-      'exportPdf',
-      'exportWord',
       'findAndReplace',
-      'highlight',
+
       'horizontalLine',
-      'imageInsert',
-      'pageNavigation',
+      // 'imageInsert',
+
       'pageBreak',
       'removeFormat',
-      'specialCharacters',
-      'restrictedEditingException',
+      // 'specialCharacters',
+      // 'restrictedEditingException',
       'subscript',
-      'superscript'
+      'superscript',
+      '|',
+      'pageNavigation'
+
       // 'placeholder',
-    ]
+    ],
+    shouldNotGroupWhenFull: true
   },
   language: 'en',
   image: {
@@ -293,8 +299,7 @@ Editor.defaultConfig = {
         view: { name: 'p', classes: 'ck-heading4' },
         title: 'Heading 4',
         class: 'ck-heading4'
-      },
-
+      }
     ]
   },
   table: {
