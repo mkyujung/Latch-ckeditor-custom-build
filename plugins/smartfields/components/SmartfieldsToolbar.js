@@ -51,10 +51,6 @@ export default class SmartfielsToolbar extends Plugin {
       this.dropdownRef.bind('isEnabled').to(command, 'isEnabled');
 
       this.listenTo(this.dropdownRef, 'execute', (evt) => {
-        console.log(
-          '🚀 ~ file: SmartfieldsToolbar.js ~ line 53 ~ SmartfielsToolbar ~ this.listenTo ~ evt',
-          evt.source.commandParam
-        );
         editor.execute(
           InsertSmartfieldCommand.eventId,
           evt.source.commandParam

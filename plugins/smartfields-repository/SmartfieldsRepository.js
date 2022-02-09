@@ -57,10 +57,6 @@ class SmartfieldsRepository extends Plugin {
   }
 
   _handleRefreshSmartfieldList(event, params) {
-    console.log(
-      '🚀 ~ file: SmartfieldsRepository.js ~ line 60 ~ SmartfieldsRepository ~ _handleRefreshSmartfieldList ~ params',
-      params
-    );
     this.set('smartfields', [...params]);
     this._updateModel(params);
   }

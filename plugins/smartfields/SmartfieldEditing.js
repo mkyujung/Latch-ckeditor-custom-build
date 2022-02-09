@@ -201,10 +201,6 @@ export default class SmartfieldEditing extends Plugin {
       const counterPartyToProvide = modelItem.getAttribute(
         'counterpartytoprovide'
       );
-      console.log(
-        '🚀 ~ file: SmartfieldEditing.js ~ line 202 ~ SmartfieldEditing ~ _defineConverters ~ modelItem',
-        modelItem
-      );
 
       const smartfieldViewButton = viewWriter.createContainerElement('button', {
         class:
