@@ -3,7 +3,7 @@ import { EditorWithUI } from '@ckeditor/ckeditor5-core/src/editor/editorwithui';
 import { Element } from '@ckeditor/ckeditor5-engine';
 
 export const isSmartfield = (element: Element): boolean => {
-  return element.name === 'smartfield';
+  return element.name === 'smartfield'; // return element.is('smartfield'); might be a better implementation as its ck native
 };
 
 export function* getSmartfieldIdsInDocument(
