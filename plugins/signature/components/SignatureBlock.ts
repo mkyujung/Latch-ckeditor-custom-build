@@ -58,7 +58,7 @@ export default class SignatureBlock extends Plugin {
     schema.register('signatureField', {
       isLimit: true,
       allowIn: 'signatureBlock',
-      allowAttributes: ['signature', 'blockId'],
+      allowAttributes: ['signature', 'blockId', 'signerSmartfieldId'],
       allowChildren: ['$block']
     });
 
@@ -157,7 +157,8 @@ export default class SignatureBlock extends Plugin {
 
         return modelWriter.createElement('signatureField', {
           signature: viewElement.getAttribute('signature') || '',
-          blockId: viewElement.getAttribute('block-id')
+          blockId: viewElement.getAttribute('block-id'),
+          signerSmartfieldId: viewElement.getAttribute('signer-smartfield-id')
         });
       },
       view: {
@@ -173,7 +174,8 @@ export default class SignatureBlock extends Plugin {
         const div = viewWriter.createContainerElement('div', {
           class: 'signature-field',
           signature: modelItem.getAttribute('signature'),
-          'block-id': modelItem.getAttribute('blockId')
+          'block-id': modelItem.getAttribute('blockId'),
+          'signer-smartfield-id': modelItem.getAttribute('signerSmartfieldId')
         });
 
         return div;
@@ -187,7 +189,8 @@ export default class SignatureBlock extends Plugin {
         const fieldWrapper = viewWriter.createContainerElement('div', {
           class: 'signature-field',
           signature: modelItem.getAttribute('signature'),
-          'block-id': modelItem.getAttribute('blockId')
+          'block-id': modelItem.getAttribute('blockId'),
+          'signer-smartfield-id': modelItem.getAttribute('signerSmartfieldId')
         });
 
         const reactWrapper = viewWriter.createRawElement(
@@ -197,7 +200,8 @@ export default class SignatureBlock extends Plugin {
             renderSignature(
               domElement,
               modelItem.getAttribute('blockId'),
-              modelItem.getAttribute('signature')
+              modelItem.getAttribute('signature'),
+              modelItem.getAttribute('signerSmartfieldId')
             );
           }
         );
