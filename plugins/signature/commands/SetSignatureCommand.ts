@@ -42,7 +42,8 @@ export default class SetSignatureCommand extends Command {
         this.editor.model.insertContent(
           writer.createElement('signatureField', {
             blockId: modelItem.getAttribute('blockId'),
-            signature: url
+            signature: url,
+            signerSmartfieldId: modelItem.getAttribute('signerSmartfieldId')
           }),
           itemStart
         );
