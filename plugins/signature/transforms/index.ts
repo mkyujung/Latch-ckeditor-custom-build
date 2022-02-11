@@ -7,6 +7,7 @@ export function createSignatureBlock(
     blockId: string;
     signingPartySmartfield: Record<string, string>; // Must be a smartfield
     signerSmartfield: Record<string, string>;
+    signerSmartfieldString?: string;
   }
 ): Element {
   const { blockId, signingPartySmartfield, signerSmartfield } = params;
@@ -22,7 +23,8 @@ export function createSignatureBlock(
   const signatureField = writer.createElement('signatureField', {
     blockId,
     signature: '',
-    signerSmartfieldId: signerSmartfield.id
+    signerSmartfieldId: signerSmartfield.id,
+    signerSmartfieldString: signerSmartfield.value || signerSmartfield.title
   });
   const signerNameElement = writer.createElement('signerName', {
     smartfieldId: signerSmartfield.id

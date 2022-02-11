@@ -58,7 +58,12 @@ export default class SignatureBlock extends Plugin {
     schema.register('signatureField', {
       isLimit: true,
       allowIn: 'signatureBlock',
-      allowAttributes: ['signature', 'blockId', 'signerSmartfieldId'],
+      allowAttributes: [
+        'signature',
+        'blockId',
+        'signerSmartfieldId',
+        'signerSmartfieldString'
+      ],
       allowChildren: ['$block']
     });
 
@@ -201,7 +206,8 @@ export default class SignatureBlock extends Plugin {
               domElement,
               modelItem.getAttribute('blockId'),
               modelItem.getAttribute('signature'),
-              modelItem.getAttribute('signerSmartfieldId')
+              modelItem.getAttribute('signerSmartfieldId'),
+              modelItem.getAttribute('signerSmartfieldString')
             );
           }
         );
