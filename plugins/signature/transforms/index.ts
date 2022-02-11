@@ -30,6 +30,8 @@ export function createSignatureBlock(
     smartfieldId: signerSmartfield.id
   });
 
+  const preText = writer.createText('Name: ');
+
   const signerSmartfieldElement = writer.createElement(
     'smartfield',
     signerSmartfield
@@ -40,6 +42,7 @@ export function createSignatureBlock(
   writer.append(signerNameElement, signatureBlock);
 
   writer.append(signingPartySmartfieldElement, signingPartyElement);
+  writer.append(preText, signerNameElement);
   writer.append(signerSmartfieldElement, signerNameElement);
 
   return signatureBlock;
