@@ -280,25 +280,29 @@ Editor.defaultConfig = {
         model: 'heading1',
         view: { name: 'p', classes: 'ck-heading1' },
         title: 'Heading 1',
-        class: 'ck-heading1'
+        class: 'ck-heading1',
+        converterPriority: 'high'
       },
       {
         model: 'heading2',
         view: { name: 'p', classes: 'ck-heading2' },
         title: 'Heading 2',
-        class: 'ck-heading2'
+        class: 'ck-heading2',
+        converterPriority: 'high'
       },
       {
         model: 'heading3',
         view: { name: 'p', classes: 'ck-heading3' },
         title: 'Heading 3',
-        class: 'ck-heading3'
+        class: 'ck-heading3',
+        converterPriority: 'high'
       },
       {
         model: 'heading4',
         view: { name: 'p', classes: 'ck-heading4' },
         title: 'Heading 4',
-        class: 'ck-heading4'
+        class: 'ck-heading4',
+        converterPriority: 'high'
       }
     ]
   },
@@ -324,7 +328,7 @@ Editor.defaultConfig = {
   }
 };
 
-const packageVersion = 37,
+const packageVersion = 38,
   buildTime = new Date();
 
 const CustomModule = {
