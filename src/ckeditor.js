@@ -324,7 +324,7 @@ Editor.defaultConfig = {
   }
 };
 
-const packageVersion = 36,
+const packageVersion = 37,
   buildTime = new Date();
 
 const CustomModule = {
