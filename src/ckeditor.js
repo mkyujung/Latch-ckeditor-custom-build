@@ -313,13 +313,13 @@ Editor.defaultConfig = {
     // tableToolbar: ['comment']
   },
   pagination: {
-    pageWidth: '21cm',
-    pageHeight: '29.7cm',
+    pageWidth: '8.5in',
+    pageHeight: '11in',
     pageMargins: {
-      top: '20mm',
-      bottom: '20mm',
-      left: '12mm',
-      right: '12mm'
+      top: '1in',
+      bottom: '1in',
+      left: '1in',
+      right: '1in'
     }
   }
 };
