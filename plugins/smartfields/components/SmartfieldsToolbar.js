@@ -12,6 +12,7 @@ import InsertSmartfieldCommand from '../commands/InsertSmartfieldCommand';
 import { keyBy } from 'lodash';
 import Plugin from '@ckeditor/ckeditor5-core/src/plugin';
 import SmartfieldsRepository from '../../smartfields-repository/SmartfieldsRepository';
+import { viewToModelPositionOutsideModelElement } from '@ckeditor/ckeditor5-widget';
 
 export default class SmartfielsToolbar extends Plugin {
   static get requires() {

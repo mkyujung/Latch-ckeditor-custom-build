@@ -2,13 +2,13 @@ import './components/Smartfield.css';
 
 import {
   toWidget,
-  viewToModelPositionOutsideModelElement,
+  // viewToModelPositionOutsideModelElement,
   Widget
 } from '@ckeditor/ckeditor5-widget';
 
 import InsertSmartfieldCommand from './commands/InsertSmartfieldCommand';
 import Plugin from '@ckeditor/ckeditor5-core/src/plugin';
-
+import { viewToModelPositionOutsideModelElement } from '@ckeditor/ckeditor5-widget/src/utils';
 export default class SmartfieldEditing extends Plugin {
   static get pluginName() {
     return 'SmartfieldEditing';
@@ -29,8 +29,11 @@ export default class SmartfieldEditing extends Plugin {
 
     this.editor.editing.mapper.on(
       'viewToModelPosition',
-      viewToModelPositionOutsideModelElement(this.editor.model, (viewElement) =>
-        viewElement.hasClass('smartfield')
+      viewToModelPositionOutsideModelElement(
+        this.editor.model,
+        (viewElement) =>
+          viewElement.hasClass('counterparty-smartfield') ||
+          viewElement.hasClass('smartfield')
       )
     );
 
