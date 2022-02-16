@@ -216,7 +216,7 @@ Editor.defaultConfig = {
       'heading',
       'fontFamily',
       'fontSize',
-      // '|',
+      '|',
       // 'exportPdf',
       // 'exportWord',
 
@@ -273,6 +273,14 @@ Editor.defaultConfig = {
       'linkImage'
     ]
   },
+  // fontFamily: {
+  //   options: [
+  //     "Inter, system-ui, sans-serif",
+  //     'Arial, Helvetica, sans-serif',
+  //     'Courier New, Courier, monospace',
+  //     'Georgia, serif'
+  //   ]
+  // },
   heading: {
     options: [
       { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },

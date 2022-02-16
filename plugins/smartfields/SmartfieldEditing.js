@@ -2,7 +2,6 @@ import './components/Smartfield.css';
 
 import {
   toWidget,
-  // viewToModelPositionOutsideModelElement,
   Widget
 } from '@ckeditor/ckeditor5-widget';
 
@@ -31,9 +30,10 @@ export default class SmartfieldEditing extends Plugin {
       'viewToModelPosition',
       viewToModelPositionOutsideModelElement(
         this.editor.model,
-        (viewElement) =>
-          viewElement.hasClass('counterparty-smartfield') ||
-          viewElement.hasClass('smartfield')
+        (viewElement) => viewElement.hasClass('counterparty-smartfield') ||
+          viewElement.hasClass('smartfield') || 
+          viewElement.hasClass('signer-smartfield')
+        
       )
     );
 
