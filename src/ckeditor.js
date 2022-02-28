@@ -1,6 +1,8 @@
 import * as SignatureCommands from '../plugins/signature/commands';
 import * as SignatureModule from '../plugins/signature';
 import * as smartfieldQueries from '../plugins/smartfields-repository/queries';
+
+
 // export default CkModule;
 import * as SmartfieldsRepositoryCommands from '../plugins/smartfields-repository/commands';
 
@@ -137,7 +139,6 @@ Editor.builtinPlugins = [
   CloudServices,
   Code,
   CodeBlock,
-  // Comments,
   DataFilter,
   DataSchema,
   Essentials,
@@ -228,6 +229,7 @@ Editor.defaultConfig = {
       'underline',
       // 'strikethrough',
       'highlight',
+      
       '|',
       'bulletedList',
       'numberedList',
@@ -236,6 +238,7 @@ Editor.defaultConfig = {
       'alignment',
       // '|',
       // 'todoList',
+      'comment',
       'link',
       // 'blockQuote',
       'imageUpload',
@@ -348,7 +351,7 @@ const CustomModule = {
   ...smartfieldQueries,
   // Have to spread commands as part of module
   ...SmartfieldsRepositoryCommands,
-  ...SignatureCommands
+  ...SignatureCommands,
 };
 
 export default CustomModule;

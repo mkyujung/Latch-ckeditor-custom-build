@@ -1,7 +1,7 @@
 import './SignatureBlock.css';
 
 import { ContextPlugin, Plugin } from '@ckeditor/ckeditor5-core';
-import { InsertSignatureBlockCommand, SetSignatureCommand } from '../commands';
+import { InsertSignatureBlockCommand, RemoveSignatureBlockCommand, SetSignatureCommand } from '../commands';
 import { toWidget, toWidgetEditable } from '@ckeditor/ckeditor5-widget';
 
 import SmartfieldsRepository from '../../smartfields-repository/SmartfieldsRepository';
@@ -32,6 +32,11 @@ export default class SignatureBlock extends Plugin {
       SetSignatureCommand.eventId,
       new SetSignatureCommand(editor)
     );
+
+    editor.commands.add(
+      RemoveSignatureBlockCommand.eventId,
+      new RemoveSignatureBlockCommand(editor)
+    )
 
     this.editor.config.define('signatures', {
       renderSignature: () => console.log('test render')
