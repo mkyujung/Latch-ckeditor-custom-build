@@ -87,6 +87,7 @@ import TrackChanges from '@ckeditor/ckeditor5-track-changes/src/trackchanges';
 import Underline from '@ckeditor/ckeditor5-basic-styles/src/underline';
 import WideSidebar from '@ckeditor/ckeditor5-comments/src/annotations/widesidebar';
 import WordCount from '@ckeditor/ckeditor5-word-count/src/wordcount';
+import { ConditionalsPlugin } from '../plugins/conditionals';
 
 class Context extends ContextBase {}
 // An example of a plugin that provides user data for an editor
@@ -178,6 +179,7 @@ Editor.builtinPlugins = [
   PasteFromOffice,
   // Placeholder,
   SignaturePlugin,
+  ConditionalsPlugin,
   SmartfieldPlugin,
   SmartfieldsRepository,
   RemoveFormat,
@@ -229,7 +231,8 @@ Editor.defaultConfig = {
       'underline',
       // 'strikethrough',
       'highlight',
-      
+      '|',
+      'conditionalsButton',
       '|',
       'bulletedList',
       'numberedList',
