@@ -2,7 +2,6 @@ import * as SignatureCommands from '../plugins/signature/commands';
 import * as SignatureModule from '../plugins/signature';
 import * as smartfieldQueries from '../plugins/smartfields-repository/queries';
 
-
 // export default CkModule;
 import * as SmartfieldsRepositoryCommands from '../plugins/smartfields-repository/commands';
 
@@ -87,7 +86,7 @@ import TrackChanges from '@ckeditor/ckeditor5-track-changes/src/trackchanges';
 import Underline from '@ckeditor/ckeditor5-basic-styles/src/underline';
 import WideSidebar from '@ckeditor/ckeditor5-comments/src/annotations/widesidebar';
 import WordCount from '@ckeditor/ckeditor5-word-count/src/wordcount';
-
+import LineHeight from 'ckeditor5-line-height-plugin/src/lineheight';
 class Context extends ContextBase {}
 // An example of a plugin that provides user data for an editor
 // // that uses `Comments` and `RevisionHistory` plugins.
@@ -168,6 +167,7 @@ Editor.builtinPlugins = [
   LinkImage,
   // List,
   ListStyle,
+  LineHeight,
   // Markdown,
   // MediaEmbed,
   // MediaEmbedToolbar,
@@ -209,10 +209,10 @@ Editor.builtinPlugins = [
 Editor.defaultConfig = {
   toolbar: {
     items: [
+      'lineheight',
       'smartfield',
-
-      'undo',
-      'redo',
+      // 'undo',
+      // 'redo',
       '|',
       'heading',
       'fontFamily',
@@ -229,7 +229,7 @@ Editor.defaultConfig = {
       'underline',
       // 'strikethrough',
       'highlight',
-      
+
       '|',
       'bulletedList',
       'numberedList',
@@ -257,13 +257,17 @@ Editor.defaultConfig = {
       // 'specialCharacters',
       // 'restrictedEditingException',
       'subscript',
-      'superscript',
-      '|',
-      'pageNavigation'
+      'superscript'
+      // '|',
+      // 'pageNavigation'
 
       // 'placeholder',
     ],
     shouldNotGroupWhenFull: true
+  },
+  lineHeight: {
+    // specify your otions in the lineHeight config object. Default values are [ 0, 0.5, 1, 1.5, 2 ]
+    options: [0.5, 1, 1.5, 2, 2.5]
   },
   language: 'en',
   image: {
@@ -351,7 +355,7 @@ const CustomModule = {
   ...smartfieldQueries,
   // Have to spread commands as part of module
   ...SmartfieldsRepositoryCommands,
-  ...SignatureCommands,
+  ...SignatureCommands
 };
 
 export default CustomModule;
