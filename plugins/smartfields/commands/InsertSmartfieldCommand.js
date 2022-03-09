@@ -7,6 +7,7 @@ export default class InsertSmartfieldCommand extends Command {
     this.editor.model.change((writer) => {
       const smartfield = writer.createElement('smartfield', commandParam);
 
+      console.log(commandParam)
       this.editor.model.insertContent(smartfield);
 
       writer.setSelection(smartfield, 'on');

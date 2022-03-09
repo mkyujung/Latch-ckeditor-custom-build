@@ -1,6 +1,8 @@
 import Command from '@ckeditor/ckeditor5-core/src/command';
+import { getSmartfieldElementsInDocument } from '../smartfields-repository/queries';
+import ConditionalsRefreshCommand from './ConditionalsRefreshCommand';
 
-const CONDITIONAL = 'conditional'
+const CONDITIONAL = 'conditional';
 
 export default class ConditionalsCommand extends Command {
   static eventId = 'conditionals-command';
@@ -8,6 +10,8 @@ export default class ConditionalsCommand extends Command {
   refresh() {
     const model = this.editor.model;
     const doc = model.document;
+
+    console.log('REFRESHED?');
 
     this.value = doc.selection.getAttribute(CONDITIONAL);
     this.isEnabled = model.schema.checkAttributeInSelection(
@@ -22,32 +26,71 @@ export default class ConditionalsCommand extends Command {
     const { document } = model;
     const { selection } = document;
 
+    const smartfields = getSmartfieldElementsInDocument(editor);
+
+
+
+    // console.log('params', params);
+
     model.change((writer) => {
-      console.log(selection.isCollapsed ? 'COLLAPSED' : 'NOT COLLAPSED');
-      if (selection.isCollapsed) {
+      
+      // from what I gathered 1 selection has 1 range
+      const range = selection.getFirstRange();
+      writer.setSelection(editor.model.document.getRoot(), "in")
+      
 
-        if(selection.hasAttribute(CONDITIONAL)){
-          writer.removeSelectionAttribute(CONDITIONAL)
-        } else {
-          writer.setSelectionAttribute(CONDITIONAL, true);
-        }
-      } else {
+      const flatRanges = range.getMinimalFlatRanges();
 
-        // complains about generator being passed
-        // although works fine
-        // @ts-ignore
-        const ranges = model.schema.getValidRanges(selection.getRanges(),
-        CONDITIONAL
-        );
+      console.log('FLATRANGES', flatRanges);
 
-        for (const range of ranges) {
-          if(selection.hasAttribute(CONDITIONAL)){
-            writer.removeAttribute(CONDITIONAL, range)
-          } else {
-            writer.setAttribute(CONDITIONAL, true, range);
-          }
+
+      flatRanges.forEach((range) => {
+        const conditionalEl = writer.createElement('conditional', params);
+        writer.wrap(range, conditionalEl);
+      });
+
+
+    });
+  }
+
+  _addConditionalAttributesOnSelection(
+    writer,
+    isMet,
+    smartfieldId,
+    condition,
+    value
+  ) {
+    writer.setSelectionAttribute(CONDITIONAL, true);
+    writer.setSelectionAttribute('smartfieldId', smartfieldId);
+    writer.setSelectionAttribute('condition', condition);
+    writer.setSelectionAttribute('value', value);
+  }
+  //
+  _addConditionalAttributesOnRange(
+    writer,
+    range,
+    isMet,
+    smartfieldId,
+    condition,
+    value
+  ) {
+    writer.setAttribute(CONDITIONAL, true, range);
+    writer.setAttribute('smartfieldId', smartfieldId, range);
+    writer.setAttribute('condition', condition, range);
+    writer.setAttribute('value', value, range);
+  }
+
+  checkCondition(smartfields, conditionalParams) {
+    for (const smartfield of smartfields) {
+      const id = smartfield.getAttribute('id');
+      if (id === conditionalParams.smartfieldId) {
+        const value = smartfield.getAttribute('value');
+        if (value === conditionalParams.value) {
+          return true;
         }
       }
-    });
+    }
+
+    return false;
   }
 }
