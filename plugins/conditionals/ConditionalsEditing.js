@@ -3,8 +3,11 @@ import { toWidget } from '@ckeditor/ckeditor5-widget/src/utils';
 import ConditionalsCommand from './ConditionalsCommand';
 import ConditionalsRefreshCommand from './ConditionalsRefreshCommand';
 import { viewToModelPositionOutsideModelElement } from '@ckeditor/ckeditor5-widget/src/utils';
+import ObservableMixin from '@ckeditor/ckeditor5-utils/src/observablemixin';
+import mix from '@ckeditor/ckeditor5-utils/src/mix';
+
 import { RefreshSmartfieldsListCommand } from '../smartfields-repository/commands';
-export default class ConditionalsEditing extends Plugin {
+ class ConditionalsEditing extends Plugin {
   static get pluginName() {
     return 'ConditionalsEditing';
   }
@@ -15,6 +18,8 @@ export default class ConditionalsEditing extends Plugin {
 
   init() {
     const editor = this.editor;
+
+    console.log("EDITING INIT")
 
     editor.model.schema.extend('$text', { allowAttributes: 'conditional' });
 
@@ -29,15 +34,6 @@ export default class ConditionalsEditing extends Plugin {
         viewElement.hasAttribute('conditional')
       )
     );
-
-    // this.listenTo(new RefreshSmartfieldsListCommand(this.editor), "execute", () => {
-
-    //   console.log("WOAH CANT BELIEVE THIS ACTUALLY WORKS WOW")
-    // })
-
-    // this.on(RefreshSmartfieldsListCommand.eventId, () => {
-    //   console.log('WOAH CANT BELIEVE THIS ACTUALLY WORKS WOW');
-    // });
 
     // editor.conversion.elementToElement({
     //   model: "conditional",
@@ -107,3 +103,8 @@ export default class ConditionalsEditing extends Plugin {
     });
   }
 }
+
+
+mix(ConditionalsEditing, ObservableMixin);
+
+export default ConditionalsEditing

@@ -19,14 +19,45 @@ export default class ConditionalsRefreshCommand extends Command {
   //   );
   // }
 
-  execute(params) {
+  execute() {
     const { editor } = this;
     const { model } = editor;
 
     const smartfields = getSmartfieldElementsInDocument(editor);
 
-    console.log('ref params', params);
+    const smartfieldElementsArray = Array.from(smartfields);
+    const conditionals = this.getAllConditionalElementsInDoc();
 
+    conditionals.forEach((conditional) => {
+      const linkedSmartfieldId = conditional.getAttribute('smartfield-id');
+      const linkedSmartfieldElement = smartfieldElementsArray.find(
+        (smartfield) => smartfield.getAttribute('id') === linkedSmartfieldId
+      );
+
+      console.log('linked', linkedSmartfieldElement);
+
+      const action = conditional.getAttribute('action');
+      const condition = conditional.getAttribute('condition');
+      const conditionalValue = conditional.getAttribute('value');
+      const smartfieldValue = linkedSmartfieldElement.getAttribute('value');
+
+      let result = false;
+      if (condition === 'equals') {
+        result = conditionalValue === smartfieldValue;
+      } else {
+        result = conditionalValue !== smartfieldValue;
+      }
+      
+      model.change((writer) => {
+        if (result) {
+          writer.setAttribute('is-met', true, conditional);
+        } else {
+          if (conditional.hasAttribute("is-met")){
+            writer.removeAttribute("is-met", conditional)
+          }
+        }
+      });
+    });
 
     // go through each condition and
     // check if needed smartfields condition is met
@@ -46,26 +77,18 @@ export default class ConditionalsRefreshCommand extends Command {
   //   return false;
   // }
 
-  checkConditionsMet() {
-    const conditionals = this.getAllConditionsInDoc()
-    console.log("conditions", conditionals)
-  }
-
-  getAllConditionsInDoc() {
+  getAllConditionalElementsInDoc() {
     const { editor } = this;
     const docRoot = editor.model.document.getRoot();
     const range = editor.model.createRangeIn(docRoot);
 
     const conditionals = [];
     for (const value of range.getWalker()) {
-      if (
-        value.type === 'elementStart' &&
-        value.item.hasAttribute('conditional')
-      ) {
+      if (value.type === 'elementStart' && value.item.name === 'conditional') {
         conditionals.push(value.item);
       }
     }
 
-    return conditionals
+    return conditionals;
   }
 }

@@ -7,6 +7,7 @@ import { isSmartfield } from './queries';
 import mix from '@ckeditor/ckeditor5-utils/src/mix';
 import ObservableMixin from '@ckeditor/ckeditor5-utils/src/observablemixin';
 import Plugin from '@ckeditor/ckeditor5-core/src/plugin';
+import ConditionalsRefreshCommand from '../conditionals/ConditionalsRefreshCommand';
 
 class SmartfieldsRepository extends Plugin {
   static get pluginName() {
@@ -57,8 +58,11 @@ class SmartfieldsRepository extends Plugin {
   }
 
   _handleRefreshSmartfieldList(event, params) {
+    console.log(event)
     this.set('smartfields', [...params]);
     this._updateModel(params);
+    this.editor.execute(ConditionalsRefreshCommand.eventId)
+
   }
 
   // This updates the backing CKeditor model with refreshed smartfields

@@ -46,7 +46,12 @@ export default class ConditionalsCommand extends Command {
 
       flatRanges.forEach((range) => {
         const conditionalEl = writer.createElement('conditional', params);
-        writer.wrap(range, conditionalEl);
+        const el = range.getContainedElement()
+        if(el && el.name === "conditional"){
+          writer.unwrap(el)
+        } else {
+          writer.wrap(range, conditionalEl);
+        }
       });
 
 
