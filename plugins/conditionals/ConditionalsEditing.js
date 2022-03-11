@@ -3,7 +3,7 @@ import { toWidget } from '@ckeditor/ckeditor5-widget/src/utils';
 import ConditionalsCommand from './ConditionalsCommand';
 import ConditionalsRefreshCommand from './ConditionalsRefreshCommand';
 import { viewToModelPositionOutsideModelElement } from '@ckeditor/ckeditor5-widget/src/utils';
-
+import { RefreshSmartfieldsListCommand } from '../smartfields-repository/commands';
 export default class ConditionalsEditing extends Plugin {
   static get pluginName() {
     return 'ConditionalsEditing';
@@ -30,6 +30,14 @@ export default class ConditionalsEditing extends Plugin {
       )
     );
 
+    // this.listenTo(new RefreshSmartfieldsListCommand(this.editor), "execute", () => {
+
+    //   console.log("WOAH CANT BELIEVE THIS ACTUALLY WORKS WOW")
+    // })
+
+    // this.on(RefreshSmartfieldsListCommand.eventId, () => {
+    //   console.log('WOAH CANT BELIEVE THIS ACTUALLY WORKS WOW');
+    // });
 
     // editor.conversion.elementToElement({
     //   model: "conditional",
@@ -40,7 +48,6 @@ export default class ConditionalsEditing extends Plugin {
       model: 'conditional',
       view: (modelElement, { writer }) => {
         const attrs = {};
-
 
         const attrGenerator = modelElement.getAttributes();
 
@@ -68,7 +75,7 @@ export default class ConditionalsEditing extends Plugin {
           attrs[attr[0]] = attr[1];
         }
 
-        console.log("VIEW ELEMENT", viewElement)
+        console.log('VIEW ELEMENT', viewElement);
 
         // @ts-ignore
         const element = writer.createElement('conditional', attrs);
@@ -95,8 +102,8 @@ export default class ConditionalsEditing extends Plugin {
       isObject: true,
       isInline: true,
       // Allow in places where other blocks are allowed (e.g. directly in the root).
-      allowWhere: ['$block', "$text"],
-      allowChildren: "$text"
+      allowWhere: ['$block', '$text'],
+      allowChildren: '$text'
     });
   }
 }
