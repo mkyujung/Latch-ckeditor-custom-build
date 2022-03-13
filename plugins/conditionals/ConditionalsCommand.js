@@ -36,7 +36,7 @@ export default class ConditionalsCommand extends Command {
       
       // from what I gathered 1 selection has 1 range
       const range = selection.getFirstRange();
-      writer.setSelection(editor.model.document.getRoot(), "in")
+      // writer.setSelection(editor.model.document.getRoot(), "in")
       
 
       const flatRanges = range.getMinimalFlatRanges();
@@ -45,11 +45,11 @@ export default class ConditionalsCommand extends Command {
 
 
       flatRanges.forEach((range) => {
-        const conditionalEl = writer.createElement('conditional', params);
         const el = range.getContainedElement()
         if(el && el.name === "conditional"){
           writer.unwrap(el)
         } else {
+          const conditionalEl = writer.createElement('conditional', params);
           writer.wrap(range, conditionalEl);
         }
       });
@@ -57,6 +57,45 @@ export default class ConditionalsCommand extends Command {
 
     });
   }
+
+
+  // execute(params) {
+  //   const { editor } = this;
+  //   const { model } = editor;
+  //   const { document } = model;
+  //   const { selection } = document;
+
+  //   console.log("params",params)
+
+  //   model.change((writer) => {
+  //     console.log(selection.isCollapsed ? 'COLLAPSED' : 'NOT COLLAPSED');
+  //     if (selection.isCollapsed) {
+
+  //       if(selection.hasAttribute(CONDITIONAL)){
+  //         writer.removeSelectionAttribute(CONDITIONAL)
+  //       } else {
+  //         // writer.setSelectionAttribute(CONDITIONAL, true);
+  //         this._addConditionalAttributesOnSelection(writer, true, params.smartfieldId, params.condition, params.value)
+  //       }
+  //     } else {
+
+  //       // complains about generator being passed
+  //       // although works fine
+  //       // @ts-ignore
+  //       const ranges = model.schema.getValidRanges(selection.getRanges(),
+  //       CONDITIONAL
+  //       );
+
+  //       for (const range of ranges) {
+  //         if(selection.hasAttribute(CONDITIONAL)){
+  //           writer.removeAttribute(CONDITIONAL, range)
+  //         } else {
+  //           this._addConditionalAttributesOnRange(writer, range, true, params['smartfield-id'], params.condition, params.value)
+  //         }
+  //       }
+  //     }
+  //   });
+  // }
 
   _addConditionalAttributesOnSelection(
     writer,
@@ -66,7 +105,7 @@ export default class ConditionalsCommand extends Command {
     value
   ) {
     writer.setSelectionAttribute(CONDITIONAL, true);
-    writer.setSelectionAttribute('smartfieldId', smartfieldId);
+    writer.setSelectionAttribute('smartfield-id', smartfieldId);
     writer.setSelectionAttribute('condition', condition);
     writer.setSelectionAttribute('value', value);
   }
@@ -80,7 +119,7 @@ export default class ConditionalsCommand extends Command {
     value
   ) {
     writer.setAttribute(CONDITIONAL, true, range);
-    writer.setAttribute('smartfieldId', smartfieldId, range);
+    writer.setAttribute('smartfield-id', smartfieldId, range);
     writer.setAttribute('condition', condition, range);
     writer.setAttribute('value', value, range);
   }

@@ -1,0 +1,11 @@
+conditional[is-met="true"][action="hide"] {
+  background-color: pink;
+}
+
+conditional[is-met="true"][action="show"] {
+  background-color: rgb(197, 249, 134);
+}
+
+.ck.ck-read-only conditional[is-met="true"] {
+  display: none;
+}

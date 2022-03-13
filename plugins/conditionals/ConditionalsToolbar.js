@@ -32,7 +32,7 @@ export default class ConditionalsToolbar extends Plugin {
 
       
       const mockParams = {
-        "smartfield-id": "cl0lrofxm00003e6dz1s16g6h",
+        "smartfield-id": "cl0pwcpub00003e6dx1v3b3y8",
         condition: "equals",
         value: "Latch",
         action: "hide"

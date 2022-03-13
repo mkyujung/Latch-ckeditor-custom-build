@@ -26,6 +26,8 @@ export default class ConditionalsRefreshCommand extends Command {
     const smartfields = getSmartfieldElementsInDocument(editor);
 
     const smartfieldElementsArray = Array.from(smartfields);
+
+    console.log('???', smartfieldElementsArray);
     const conditionals = this.getAllConditionalElementsInDoc();
 
     conditionals.forEach((conditional) => {
@@ -33,6 +35,10 @@ export default class ConditionalsRefreshCommand extends Command {
       const linkedSmartfieldElement = smartfieldElementsArray.find(
         (smartfield) => smartfield.getAttribute('id') === linkedSmartfieldId
       );
+
+      if (!linkedSmartfieldElement) {
+        return;
+      }
 
       console.log('linked', linkedSmartfieldElement);
 
@@ -47,13 +53,13 @@ export default class ConditionalsRefreshCommand extends Command {
       } else {
         result = conditionalValue !== smartfieldValue;
       }
-      
+
       model.change((writer) => {
         if (result) {
-          writer.setAttribute('is-met', true, conditional);
+          writer.setAttribute('is-met', 'true', conditional);
         } else {
-          if (conditional.hasAttribute("is-met")){
-            writer.removeAttribute("is-met", conditional)
+          if (conditional.hasAttribute('is-met')) {
+            writer.removeAttribute('is-met', conditional);
           }
         }
       });

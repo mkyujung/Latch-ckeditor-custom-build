@@ -5,9 +5,9 @@ import ConditionalsRefreshCommand from './ConditionalsRefreshCommand';
 import { viewToModelPositionOutsideModelElement } from '@ckeditor/ckeditor5-widget/src/utils';
 import ObservableMixin from '@ckeditor/ckeditor5-utils/src/observablemixin';
 import mix from '@ckeditor/ckeditor5-utils/src/mix';
-
+import './conditionals.css'
 import { RefreshSmartfieldsListCommand } from '../smartfields-repository/commands';
- class ConditionalsEditing extends Plugin {
+class ConditionalsEditing extends Plugin {
   static get pluginName() {
     return 'ConditionalsEditing';
   }
@@ -19,12 +19,14 @@ import { RefreshSmartfieldsListCommand } from '../smartfields-repository/command
   init() {
     const editor = this.editor;
 
-    console.log("EDITING INIT")
+    console.log('EDITING INIT');
 
     editor.model.schema.extend('$text', { allowAttributes: 'conditional' });
+    editor.model.schema.extend('paragraph', { allowChildren: 'conditional' });
 
     const options = editor.config.get('conditional.options');
     console.log('opt', options);
+
 
     this._defineSchema();
 
@@ -35,11 +37,42 @@ import { RefreshSmartfieldsListCommand } from '../smartfields-repository/command
       )
     );
 
-    // editor.conversion.elementToElement({
-    //   model: "conditional",
-    //   view: "conditional"
-    // })
+    this._defineConverters();
 
+    editor.commands.add(
+      ConditionalsCommand.eventId,
+      new ConditionalsCommand(editor)
+    );
+
+    editor.commands.add(
+      ConditionalsRefreshCommand.eventId,
+      new ConditionalsRefreshCommand(editor)
+    );
+
+    editor.execute(ConditionalsRefreshCommand.eventId)
+  }
+
+  _defineSchema() {
+    const schema = this.editor.model.schema;
+    //
+    schema.register('conditional', {
+      // Behaves like a self-contained object (e.g. an image).
+      // isObject: true,
+      isInline: true,
+      // isBlock: true,
+      // // Allow in places where other blocks are allowed (e.g. directly in the root).
+      // allowWhere: ['$block', '$text'],
+      // allowChildren: ['$block', '$text'],
+      allowIn: ['paragraph', '$text'],
+      allowChildren: '$text',
+      allowWhere: '$text',
+      inheritAllFrom: '$block',
+      allowAttributes: ["smartfield-id", 'condition', 'value', 'action', 'is-met']
+    });
+  }
+
+  _defineConverters() {
+    const { editor } = this;
     editor.conversion.for('downcast').elementToElement({
       model: 'conditional',
       view: (modelElement, { writer }) => {
@@ -51,13 +84,24 @@ import { RefreshSmartfieldsListCommand } from '../smartfields-repository/command
           attrs[attr[0]] = attr[1];
         }
 
-        const element = writer.createEditableElement(
+
+        console.log("converting model to view",attrs)
+        const element = writer.createContainerElement(
           'conditional',
           // @ts-ignore
           attrs
         );
+
+        console.log("ELEMET???",element)
         return element;
       }
+    
+    }).attributeToAttribute({
+      model: "is-met",
+      view: (modelValue) => ({
+        key: "is-met",
+        value: modelValue
+      })
     });
 
     editor.conversion.for('upcast').elementToElement({
@@ -71,40 +115,16 @@ import { RefreshSmartfieldsListCommand } from '../smartfields-repository/command
           attrs[attr[0]] = attr[1];
         }
 
-        console.log('VIEW ELEMENT', viewElement);
-
         // @ts-ignore
         const element = writer.createElement('conditional', attrs);
+
+
         return element;
       }
-    });
-
-    editor.commands.add(
-      ConditionalsCommand.eventId,
-      new ConditionalsCommand(editor)
-    );
-
-    editor.commands.add(
-      ConditionalsRefreshCommand.eventId,
-      new ConditionalsRefreshCommand(editor)
-    );
-  }
-
-  _defineSchema() {
-    const schema = this.editor.model.schema;
-    //
-    schema.register('conditional', {
-      // Behaves like a self-contained object (e.g. an image).
-      isObject: true,
-      isInline: true,
-      // Allow in places where other blocks are allowed (e.g. directly in the root).
-      allowWhere: ['$block', '$text'],
-      allowChildren: '$text'
     });
   }
 }
 
+// mix(ConditionalsEditing, ObservableMixin);
 
-mix(ConditionalsEditing, ObservableMixin);
-
-export default ConditionalsEditing
+export default ConditionalsEditing;
