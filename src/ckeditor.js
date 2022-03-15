@@ -54,12 +54,10 @@ import ListStyle from '@ckeditor/ckeditor5-list/src/liststyle';
 // import MediaEmbed from '@ckeditor/ckeditor5-media-embed/src/mediaembed';
 // import MediaEmbedToolbar from '@ckeditor/ckeditor5-media-embed/src/mediaembedtoolbar';
 import Mention from '@ckeditor/ckeditor5-mention/src/mention';
-import NarrowSidebar from '@ckeditor/ckeditor5-comments/src/annotations/narrowsidebar';
 import PageBreak from '@ckeditor/ckeditor5-page-break/src/pagebreak';
 import Pagination from '@ckeditor/ckeditor5-pagination/src/pagination';
 import Paragraph from '@ckeditor/ckeditor5-paragraph/src/paragraph';
 import PasteFromOffice from '@ckeditor/ckeditor5-paste-from-office/src/pastefromoffice';
-import Plugin from '@ckeditor/ckeditor5-core/src/plugin';
 import RemoveFormat from '@ckeditor/ckeditor5-remove-format/src/removeformat';
 import SignaturePlugin from '../plugins/signature/SignaturePlugin';
 import { SmartfieldPlugin } from '../plugins/smartfields';
@@ -85,45 +83,10 @@ import TextTransformation from '@ckeditor/ckeditor5-typing/src/texttransformatio
 import TodoList from '@ckeditor/ckeditor5-list/src/todolist';
 import TrackChanges from '@ckeditor/ckeditor5-track-changes/src/trackchanges';
 import Underline from '@ckeditor/ckeditor5-basic-styles/src/underline';
-import WideSidebar from '@ckeditor/ckeditor5-comments/src/annotations/widesidebar';
 import WordCount from '@ckeditor/ckeditor5-word-count/src/wordcount';
 import { ConditionalsPlugin } from '../plugins/conditionals';
 
 class Context extends ContextBase {}
-// An example of a plugin that provides user data for an editor
-// // that uses `Comments` and `RevisionHistory` plugins.
-// export class UsersIntegration extends Plugin {
-//   // Plugins to include in the context.
-
-//   builtinPlugins = [NarrowSidebar, WideSidebar];
-//   // Configuration shared between editors:
-
-//   defaultConfig = {
-//     // Configuration shared between editors:
-//     language: 'en'
-//   };
-//   static get requires() {
-//     return ['Comments'];
-//   }
-
-//   init() {
-//     const users = this.editor.plugins.get('Users');
-
-//     // Provide user data from your database.
-//     users.addUser({
-//       id: 'u1',
-//       name: 'Kate Smith'
-//     });
-
-//     users.addUser({
-//       id: 'u2',
-//       name: 'Joe Doe'
-//     });
-
-//     // Define the local user.
-//     users.defineMe('u1');
-//   }
-// }
 
 class Editor extends DecoupledDocumentEditor {}
 
@@ -232,7 +195,7 @@ Editor.defaultConfig = {
       // 'strikethrough',
       'highlight',
       '|',
-      'conditionalsButton',
+      // 'conditionalsButton',
       '|',
       'bulletedList',
       'numberedList',
